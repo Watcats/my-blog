@@ -1,28 +1,28 @@
 {
-  "name": "base-blog",
+  "name": "blog-vue-ts-vite",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vue-tsc --noEmit && vite build",
+    "serve": "vite preview"
   },
   "dependencies": {
-    "axios": "^0.27.2",
-    "element-plus": "^2.1.11",
-    "highlight.js": "^11.5.1",
-    "marked": "^4.0.15",
-    "typescript": "^4.6.4",
-    "vue": "^3.0.4",
-    "vue-router": "^4.0.15",
-    "vuex": "^4.0.2"
+    "axios": "^0.21.1",
+    "element-plus": "^1.0.2-beta.41",
+    "highlight.js": "^10.7.2",
+    "marked": "^2.0.3",
+    "vue": "^3.0.5",
+    "vue-router": "^4.0.6",
+    "vuex": "^4.0.0"
   },
   "devDependencies": {
-    "@types/marked": "^4.0.3",
-    "@vitejs/plugin-vue": "^2.3.2",
-    "@vue/compiler-sfc": "^3.2.33",
-    "babel-plugin-component": "^1.1.1",
-    "less": "^4.1.2",
-    "vite": "^2.9.8",
-    "vite-plugin-style-import": "^2.0.0",
-    "vue-tsc": "^0.34.11"
+    "@types/marked": "^2.0.2",
+    "@vitejs/plugin-vue": "^1.2.2",
+    "@vue/compiler-sfc": "^3.0.5",
+    "less": "^4.1.1",
+    "typescript": "^4.1.3",
+    "vite": "^2.2.3",
+    "vite-plugin-style-import": "^0.10.0",
+    "vue-tsc": "^0.0.24"
   }
 }

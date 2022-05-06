@@ -1,5 +1,6 @@
 import { InjectionKey } from 'vue'
 import { createStore, Store } from 'vuex'
+import user from "./modules/user";
 
 export interface State {
   count: number
@@ -12,6 +13,9 @@ export const store = createStore<State>({
     return {
       count: 0
     }
+  },
+  modules: {
+    user
   },
   mutations: {
     increment(state) {
