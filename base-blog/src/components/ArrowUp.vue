@@ -1,11 +1,7 @@
 
 <template>
   <div>
-    <i
-      v-show="isShowBtn"
-      @click="topFunction"
-      class="el-icon-arrow-up"
-    ></i>
+    <i v-show="isShowBtn" @click="topFunction" class="el-icon-arrow-up"></i>
   </div>
 </template>
 <script lang="ts">
@@ -35,11 +31,11 @@ export default defineComponent({
     const topFunction = (): void => {
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
-    }
+    };
 
     return {
       state,
-      topFunction
+      topFunction,
     };
   },
 });

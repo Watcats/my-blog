@@ -1,32 +1,13 @@
 <template>
-  <el-dialog
-    title="评论"
-    width="60%"
-    v-model="state.dialogDodel"
-    @close="cancel"
-  >
+  <el-dialog title="评论" width="60%" v-model="state.dialogDodel" @close="cancel">
     <el-form>
       <el-form-item>
-        <el-input
-          type="textarea"
-          v-model="state.content"
-          placeholder="文明社会，理性评论"
-          autocomplete="off"
-        ></el-input>
+        <el-input type="textarea" v-model="state.content" placeholder="文明社会，理性评论" autocomplete="off"></el-input>
       </el-form-item>
     </el-form>
-    <div
-      slot="footer"
-      class="dialog-footer"
-    >
-      <el-button
-        type="default"
-        @click="cancel"
-      >取消</el-button>
-      <el-button
-        type="primary"
-        @click="handleOk"
-      >确 定</el-button>
+    <div slot="footer" class="dialog-footer">
+      <el-button type="default" @click="cancel">取消</el-button>
+      <el-button type="primary" @click="handleOk">确 定</el-button>
     </div>
   </el-dialog>
 </template>

@@ -1,22 +1,17 @@
 <template>
   <div class="timeline left">
     <el-timeline>
-      <el-timeline-item
-        v-for="(l, i) in state.list"
-        :key="l._id"
-        :color="l.state === 1 ? 'green' : l.state === 3 ? 'red' : ''"
-        placement="top"
-        hide-timestamp
-      >
+      <el-timeline-item v-for="(l, i) in state.list" :key="l._id"
+        :color="l.state === 1 ? 'green' : l.state === 3 ? 'red' : ''" placement="top" hide-timestamp>
         <el-card>
-          <h3>{{l.title}}</h3>
-          <p>{{l.content}}</p>
+          <h3>{{ l.title }}</h3>
+          <p>{{ l.content }}</p>
           <p>
             <span>
-              {{formatTime(l.start_time)}}--
+              {{ formatTime(l.start_time) }}--
             </span>
             <span>
-              {{formatTime(l.end_time)}}
+              {{ formatTime(l.end_time) }}
             </span>
           </p>
         </el-card>
@@ -100,17 +95,20 @@ export default defineComponent({
 <style lang="less" scoped>
 .timeline {
   padding: 40px 0;
+
   .year {
     font-size: 34px;
     font-weight: bold;
     color: #000;
   }
+
   a {
     text-decoration: none;
   }
 
   .title {
     color: #333;
+
     &:hover {
       color: #1890ff;
     }

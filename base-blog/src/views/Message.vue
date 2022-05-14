@@ -1,55 +1,21 @@
 <template>
   <div class="message left">
-    <el-form
-      :model="state.params"
-      status-icon
-      :rules="state.rules"
-      ref="params"
-      label-width="50px"
-      class="demo-ruleForm"
-    >
-      <el-form-item
-        label="邮箱"
-        prop="email"
-      >
-        <el-input
-          type="text"
-          placeholder="必填"
-          v-model="state.params.email"
-          autocomplete="off"
-        ></el-input>
+    <el-form :model="state.params" status-icon :rules="state.rules" ref="params" label-width="50px"
+      class="demo-ruleForm">
+      <el-form-item label="邮箱" prop="email">
+        <el-input type="text" placeholder="必填" v-model="state.params.email" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item
-        label="手机"
-        prop="phone"
-      >
-        <el-input
-          v-model="state.params.phone"
-          autocomplete="off"
-        ></el-input>
+      <el-form-item label="手机" prop="phone">
+        <el-input v-model="state.params.phone" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item
-        label="名字"
-        prop="name"
-      >
+      <el-form-item label="名字" prop="name">
         <el-input v-model="state.params.name"></el-input>
       </el-form-item>
-      <el-form-item
-        label="内容"
-        prop="content"
-      >
-        <el-input
-          type="textarea"
-          placeholder="必填"
-          v-model="state.params.content"
-        ></el-input>
+      <el-form-item label="内容" prop="content">
+        <el-input type="textarea" placeholder="必填" v-model="state.params.content"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button
-          type="primary"
-          :loading="state.btnLoading"
-          @click="submit"
-        >提交</el-button>
+        <el-button type="primary" :loading="state.btnLoading" @click="submit">提交</el-button>
       </el-form-item>
     </el-form>
   </div>

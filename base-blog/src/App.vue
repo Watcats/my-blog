@@ -32,7 +32,7 @@ export default defineComponent({
       () => import("./components/CustomSlider.vue")
     ),
     Footer: defineAsyncComponent(() => import("./components/Footer.vue")),
-    ArrowUp: defineAsyncComponent(() => import("./components/Footer.vue")),
+    ArrowUp: defineAsyncComponent(() => import("./components/ArrowUp.vue")),
   },
   watch: {
     $route: function (val: any, oldVal: any) {
@@ -41,8 +41,8 @@ export default defineComponent({
   },
   setup() {
     const state = reactive({
-      isShowNav: false,
-      isShowSlider: false,
+      isShowNav: true,
+      isShowSlider: true,
     });
 
     // const router = useRouter();
@@ -51,7 +51,7 @@ export default defineComponent({
     const routeChange = (val: any, oldVal: any): void => {
       const referrer: any = document.getElementById("referrer");
       if (val.path === "/") {
-        state.isShowNav = false;
+        state.isShowNav = true;
         referrer.setAttribute("content", "always");
       } else {
         state.isShowNav = true;
@@ -76,7 +76,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-        routeChange(route, route);
+      routeChange(route, route);
     })
 
     // onBeforeRouteUpdate((to: any, from: any) => {
@@ -97,6 +97,7 @@ export default defineComponent({
 @import url("./less/monokai_sublime.less");
 @import url("./less/index.less");
 @import url("./less/mobile.less");
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -106,6 +107,7 @@ export default defineComponent({
   // width: 1200px;
   padding-top: 61px;
 }
+
 img {
   vertical-align: bottom;
 }

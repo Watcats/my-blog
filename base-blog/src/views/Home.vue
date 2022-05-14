@@ -47,7 +47,7 @@ export default defineComponent({
   name: "Home",
   setup() {
     onMounted(() => {
-      
+
     });
   },
 });

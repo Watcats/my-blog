@@ -1,31 +1,19 @@
 <template>
   <div class="project left">
     <el-row :gutter="20">
-      <el-col
-        class="el-col-pointer"
-        :span="state.isMobileOrPc ? 24 : 12"
-        v-for="(l, index) in state.list"
-        :key="l._id"
-        style="margin-bottom: 20px"
-      >
-        <a
-          :href="l.url"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      <el-col class="el-col-pointer" :span="state.isMobileOrPc ? 24 : 12" v-for="(l, index) in state.list" :key="l._id"
+        style="margin-bottom: 20px">
+        <a :href="l.url" target="_blank" rel="noopener noreferrer">
           <el-card shadow="hover">
-            <img
-              :src="l.img"
-              class="image"
-            >
+            <img :src="l.img" class="image">
             <div style="padding: 14px;">
-              <h4>{{l.title}}</h4>
-              <div class="content">{{l.content}}</div>
+              <h4>{{ l.title }}</h4>
+              <div class="content">{{ l.content }}</div>
               <span>
-                {{formatTime(l.start_time)}}--
+                {{ formatTime(l.start_time) }}--
               </span>
               <span>
-                {{formatTime(l.end_time)}}
+                {{ formatTime(l.end_time) }}
               </span>
             </div>
           </el-card>
@@ -115,13 +103,16 @@ export default defineComponent({
 .project {
   overflow: hidden;
   padding: 40px 0;
+
   .el-col-pointer {
     cursor: pointer;
   }
+
   .content {
     height: 70px;
     text-overflow: ellipsis;
   }
+
   .image {
     width: 100%;
     height: 250px;

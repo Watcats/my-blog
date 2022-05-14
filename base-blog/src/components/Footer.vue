@@ -3,9 +3,7 @@
   <div class="footer">
     <div>毕业设计上线测试</div>
     <div class="number">
-      <a href="http://www.beian.miit.gov.cn" target="_blank"
-        >备案号后面再写</a
-      >
+      <a href="http://www.beian.miit.gov.cn" target="_blank">备案号后面再写</a>
     </div>
   </div>
 </template>
