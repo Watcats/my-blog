@@ -5,7 +5,7 @@
       src="../assets/userLogo.jpeg"
       alt=""
     >
-    <div class="title">夜尽天明</div>
+    <div class="title">一个用户</div>
     <div class="right-content">
       <!-- <div class="item">
         <div class="num">123</div>粉丝
@@ -32,23 +32,25 @@
       </router-link>
     </div>
     <div class="introduce">
-      <div class="title">技术以内的 BB</div>
+      <div class="title">推荐</div>
       <div class="content">
-        <img
+        <!-- <img
           style="width:100%;"
           src="../assets/BiaoChenXuYing.png"
           alt="全栈修炼"
-        />
+        /> -->
+        可以推荐
       </div>
     </div>
     <div class="introduce">
-      <div class="title">开源项目的 BB</div>
+      <div class="title">整点别的</div>
       <div class="content">
-        <img
+        <!-- <img
           style="width:100%;"
           src="../assets/FrontEndGitHub.png"
           alt="前端GitHub"
-        />
+        /> -->
+        可以加别的
       </div>
     </div>
   </div>
@@ -105,17 +107,14 @@ export default defineComponent({
 <style scoped lang="less">
 .slider {
   padding-top: 50px;
+  border: solid black 1px;
 }
 .right {
   text-align: center;
   .right-logo {
     width: 130px;
     border-radius: 50%;
-    animation: mylogo 3s;
-    -moz-animation: mylogo 3s; /* Firefox */
-    -webkit-animation: mylogo 3s; /* Safari and Chrome */
-    -o-animation: mylogo 3s; /* Opera */
-    animation-iteration-count: infinite;
+    
   }
   .title {
     font-size: 25px;
