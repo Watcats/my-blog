@@ -1,12 +1,12 @@
 <template>
   <div style="width: 100%">
     <div class="article clearfix">
-      <div v-show="!state.isLoading" :style="{ 'width': state.isMobileOrPc ? '100%' : '75%' }" class="article-left fl">
+      <div v-show="!state.isLoading" style="{ 'width': '75%' }" class="article-left fl">
         <div class="header">
           <h1 class="title">{{ state.articleDetail.title }}</h1>
           <div class="author">
             <div class="avatar">
-              <img class="auth-logo" src="../assets/userLogo.jpeg" alt="BiaoChenXuYing">
+              <img class="auth-logo" src="../assets/userLogo.jpeg" alt="user">
             </div>
             <div class="info">
               <span class="name">
@@ -99,7 +99,7 @@ export default defineComponent({
       articleDetail: {
         toc: "",
         _id: "",
-        author: "biaochenxuying",
+        author: "user",
         category: [],
         comments: [],
         create_time: "",
@@ -276,15 +276,15 @@ export default defineComponent({
     };
   },
   beforeUnmount(): void {
-    document.title = "夜尽天明的博客网站";
+    document.title = "博客网站";
     document
       .getElementById("keywords")
-      .setAttribute("content", "夜尽天明 的博客网站");
+      .setAttribute("content", "博客网站");
     document
       .getElementById("description")
       .setAttribute(
         "content",
-        "分享大前端开发等相关的技术文章，热点资源，全栈程序员的成长之路。"
+        "个人博客网站，待完善"
       );
   },
 });

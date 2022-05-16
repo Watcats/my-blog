@@ -1,6 +1,5 @@
 <template>
-  <el-dialog title="登录" :width="isMobile ? '90%' : '50%'" v-model="state.dialogDodel" @close="cancel"
-    :show-close="true">
+  <el-dialog title="登录" width='50%' v-model="state.dialogDodel" @close="cancel" :show-close="true">
     <el-form>
       <el-formItem label="邮箱" :label-width="state.formLabelWidth">
         <el-input v-model="state.params.email" placeholder="邮箱" autocomplete="off">
@@ -38,7 +37,7 @@ import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { ElMessage } from "element-plus";
 import { key } from '../store'
-import config from "../utils/config";
+// import config from "../utils/config";
 import { RegAndLogParams, UserInfo } from "../types/index";
 import service from "../utils/https";
 import urls from "../utils/urls";
@@ -54,10 +53,6 @@ export default defineComponent({
       type: String,
       default: false,
     },
-    isMobile: {
-      type: Boolean,
-      default: false,
-    },
   },
   emits: ["ok", "cancel"],
   setup(props, context) {
@@ -66,7 +61,7 @@ export default defineComponent({
       dialogDodel: props.visible,
       btnLoading: false,
       loading: false,
-      formLabelWidth: props.isMobile ? "40px" : "60px",
+      formLabelWidth: "60px",
       params: {
         email: "",
         name: "",
@@ -77,16 +72,16 @@ export default defineComponent({
     });
 
     const route = useRoute();
-    const handleOAuth = (): void => {
-      // 保存授权前的页面链接内容
-      let preventHistory: object = {
-        name: route.name,
-        query: route.query,
-      };
-      window.sessionStorage.preventHistory = JSON.stringify(preventHistory);
-      // window.location.href = 'https://github.com/login/oauth/authorize?client_id=6de90ab270aea2bdb01c&redirect_uri=http://biaochenxuying.cn/login'
-      window.location.href = `${config.oauth_uri}?client_id=${config.client_id}&redirect_uri=${config.redirect_uri}`;
-    };
+    // const handleOAuth = (): void => {
+    //   // 保存授权前的页面链接内容
+    //   let preventHistory: object = {
+    //     name: route.name,
+    //     query: route.query,
+    //   };
+    //   window.sessionStorage.preventHistory = JSON.stringify(preventHistory);
+    //   // window.location.href = 'https://github.com/login/oauth/authorize?client_id=6de90ab270aea2bdb01c&redirect_uri=http://biaochenxuying.cn/login'
+    //   window.location.href = `${config.oauth_uri}?client_id=${config.client_id}&redirect_uri=${config.redirect_uri}`;
+    // };
 
     const submit = async (): Promise<void> => {
       let data: any = "";
@@ -94,6 +89,7 @@ export default defineComponent({
       if (props.handleFlag === "register") {
         data = await service.post(urls.register, state.params);
       } else {
+        console.log(state.params)
         data = await service.post(urls.login, state.params);
       }
       state.btnLoading = false;
@@ -117,7 +113,7 @@ export default defineComponent({
     const handleOk = (): void => {
       const reg = new RegExp(
         "^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"
-      ); //正则表达式
+      ); //邮箱检验正则表达式
       if (!state.params.email) {
         ElMessage({
           message: "邮箱不能为空！",
@@ -168,7 +164,7 @@ export default defineComponent({
 
     return {
       state,
-      handleOAuth,
+      // handleOAuth,
       handleOk,
       submit,
       cancel,
@@ -179,5 +175,10 @@ export default defineComponent({
 <style scoped>
 .dialog-footer {
   text-align: right;
+}
+</style>
+<style>
+.el-dialog{
+  background-color: white;
 }
 </style>

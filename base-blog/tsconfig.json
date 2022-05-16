@@ -15,14 +15,14 @@
       "dom"
     ],
     "types": [
-      "vite/client"
+      "vite/client",
     ]
   },
   "include": [
     "/src/**/*.ts",
     "vue.d.ts",
     "/src/**/*.tsx",
-    "/src/**/*.vue"
+    "/src/**/*.vue",
   ],
   // ts 排除的文件
   "exclude": [

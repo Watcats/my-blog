@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div v-if="!state.isMobile" class="nav">
+    <div class="nav">
       <div class="nav-content">
         <el-row :gutter="20">
           <el-col :span="3">
             <router-link to="/">
-              <img class="logo" src="../assets/logo.jpg" alt="BiaoChenXuYing">
+              <img class="logo" src="../assets/logo.jpg" alt="首页">
             </router-link>
           </el-col>
           <el-col :span="16">
@@ -22,8 +22,8 @@
                 <span class="el-dropdown-link">
                   {{ userInfo.name }}<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
-                <img v-if="!userInfo.avatar" class="user-img" src="../assets/user.png" alt="BiaoChenXuYing">
-                <img v-if="userInfo.avatar" class="user-img" :src="userInfo.avatar" alt="BiaoChenXuYing">
+                <img v-if="!userInfo.avatar" class="user-img" src="../assets/user.png" alt="头像">
+                <img v-if="userInfo.avatar" class="user-img" :src="userInfo.avatar" alt="头像">
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="logout">登 出</el-dropdown-item>
                 </el-dropdown-menu>
@@ -39,57 +39,10 @@
         </el-row>
       </div>
     </div>
-    <div v-else class="nav">
-      <div class="nav-mobile">
-        <div class="nav-mobile-logo">
-          <router-link to="/">
-            <img class="logo fl" src="../assets/logo.jpg" alt="BiaoChenXuYing">
-          </router-link>
-        </div>
-        <div class="title">{{ state.title }}</div>
-        <div class="menu" @click="handleMenu"><i class="el-icon-menu"></i></div>
-      </div>
-      <div v-if="state.isShow" class="nav-mobile-content"
-        :class="{ 'enter-slideUp': state.enterSlideUp, 'leave-slideDown': state.leaveSlideDown }">
-        <div class="list">
-          <div @click="handleClickMenu('')" class="item">
-            <router-link to="/">首 页</router-link>
-          </div>
-          <div @click="handleClickMenu('/articles')" class="item">
-            <router-link to="/articles">文 章</router-link>
-          </div>
-          <div @click="handleClickMenu('/archive')" class="item">
-            <router-link to="/archive">归 档</router-link>
-          </div>
-          <div @click="handleClickMenu('/project')" class="item">
-            <router-link to="/project">项 目</router-link>
-          </div>
-          <div @click="handleClickMenu('/timeline')" class="item">
-            <router-link to="/timeline">历 程</router-link>
-          </div>
-          <div @click="handleClickMenu('/message')" class="item">
-            <router-link to="/message">留 言</router-link>
-          </div>
-          <div @click="handleClickMenu('/about')" class="item">
-            <router-link to="/about">关 于</router-link>
-          </div>
-          <div @click="handleClickMenu('/login')" class="item">
-            <span v-if="userInfo._id">{{ userInfo.name }}</span>
-            <span v-else>登 录</span>
-          </div>
-          <div v-if="!userInfo._id" @click="handleClickMenu('/register')" class="item">
-            注 册
-          </div>
-          <div v-if="userInfo._id" @click="handleClickMenu('/logout')" class="item">
-            登 出
-          </div>
-        </div>
-      </div>
-    </div>
     <div v-if="state.isShow" class="mask" :class="{ 'mask-fade-out': state.leaveSlideDown }" @click="handleHideMenu">
     </div>
-    <RegisterAndLogin :visible="state.visible" :isMobile="state.isMobile" :handleFlag="state.handleFlag" @ok="handleOk"
-      @cancel="handleCancel"></RegisterAndLogin>
+    <RegisterAndLogin :visible="state.visible" :handleFlag="state.handleFlag" @ok="handleOk" @cancel="handleCancel">
+    </RegisterAndLogin>
   </div>
 </template>
 
@@ -198,7 +151,6 @@ export default defineComponent({
       enterSlideUp: false,
       leaveSlideDown: false,
       isShow: false,
-      isMobile: isMobileOrPc(),
     });
 
     const routeChange = (val: any, oldVal: any) => {

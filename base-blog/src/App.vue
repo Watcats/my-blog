@@ -1,28 +1,19 @@
 <template>
   <div class="container">
-    <Nav v-if="state.isShowNav" />
+    <Nav />
     <div class="layout">
       <router-view />
-      <CustomSlider v-if="state.isShowSlider"></CustomSlider>
     </div>
     <ArrowUp></ArrowUp>
-    <!-- <Footer v-if="isShowNav"></Footer> -->
+    <Footer></Footer>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, defineAsyncComponent, reactive, onMounted } from "vue";
 import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router';
-import { isMobileOrPc } from "./utils/utils";
+// import { isMobileOrPc } from "./utils/utils";
 
-// 移动端 rem 单位适配
-if (isMobileOrPc()) {
-  // width * 100 / 750 = width / 7.5
-  // 1rem = 100px
-  var width = window.screen.width;
-  window.document.getElementsByTagName("html")[0].style.fontSize =
-    width / 7.5 + "px";
-}
 
 export default defineComponent({
   name: "App",
@@ -68,9 +59,6 @@ export default defineComponent({
       if (navs.includes(val.path)) {
         state.isShowSlider = true;
       } else {
-        state.isShowSlider = false;
-      }
-      if (isMobileOrPc()) {
         state.isShowSlider = false;
       }
     };

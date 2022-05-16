@@ -100,10 +100,10 @@ export default defineComponent({
         pageNum: 1,
         pageSize: 10,
       } as ArticlesParams,
-      href:
-        import.meta.env.MODE === "development"
-          ? "http://localhost:3001/articleDetail?article_id="
-          : "https://biaochenxuying.cn/articleDetail?article_id="
+      href: "http://localhost:3001/articleDetail?article_id="
+      // import.meta.env.MODE === "development"
+      //   ? "http://localhost:3000/articleDetail?article_id="
+      //   : "https://biaochenxuying.cn/articleDetail?article_id="
     });
 
     const formatTime = (value: string | Date): string => {
