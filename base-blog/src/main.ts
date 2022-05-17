@@ -51,6 +51,8 @@ app.component(ElTag.name, ElTag);
 app.component(ElIcon.name, ElIcon);
 app.component(ElCollapseTransition.name, ElCollapseTransition);
 
+// service.defaults.withCredentials = true;
+
 app.config.globalProperties.$message = ElMessage;
 app.config.globalProperties.$loading = ElLoading.service;
 // app.config.globalProperties.productionTip = false;

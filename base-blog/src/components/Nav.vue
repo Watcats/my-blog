@@ -2,56 +2,82 @@
   <div>
     <div class="nav">
       <div class="nav-content">
-        <el-row :gutter="20">
+        <el-row gutter:20>
           <el-col :span="3">
-            <router-link to="/">
-              <img class="logo" src="../assets/logo.jpg" alt="首页">
-            </router-link>
+            <!-- <router-link to="/">
+              <img class="logo" src="../assets/logo.jpg" alt="首页" />
+            </router-link> -->
           </el-col>
           <el-col :span="16">
-            <el-menu :router="true" :default-active="state.activeIndex" active-text-color="#409eff" class="el-menu-demo"
-              mode="horizontal" @select="handleSelect">
-              <el-menuItem :route="l.path" :index="l.index" v-for="l in state.list" :key="l.index">
+            <el-menu
+              :router="true"
+              :default-active="state.activeIndex"
+              active-text-color="#409eff"
+              class="el-menu-demo"
+              mode="horizontal"
+              @select="handleSelect"
+            >
+              <el-menu-item
+                :route="l.path"
+                :index="l.index"
+                v-for="l in state.list"
+                :key="l.index"
+              >
                 {{ l.name }}
-              </el-menuItem>
+              </el-menu-item>
             </el-menu>
           </el-col>
+
           <el-col v-if="userInfo._id" :span="5">
-            <div class="nav-right">
-              <el-dropdown @command="handleLogout">
-                <span class="el-dropdown-link">
-                  {{ userInfo.name }}<i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                <img v-if="!userInfo.avatar" class="user-img" src="../assets/user.png" alt="头像">
-                <img v-if="userInfo.avatar" class="user-img" :src="userInfo.avatar" alt="头像">
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="logout">登 出</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
+            <el-row class="nav-right" gutter:0>
+              <el-col :span="8">
+                <img class="user-img" src="../assets/user.png" alt="头像" />
+              </el-col>
+              <el-col span="8" style="margin-top: 15px;">
+                {{ userInfo.name }}
+              </el-col>
+              <el-col :span="8" style="margin-top: 10px;">
+                <el-button
+                  size="small"
+                  type="danger"
+                  @click="handleLogout"
+                  style="margin"
+                  >登出</el-button
+                >
+              </el-col>
+            </el-row>
           </el-col>
-          <el-col v-else :span="4">
+          <el-col v-else :span="5">
             <div class="nav-right">
-              <el-button size="small" type="primary" @click="handleClick('login')">登录</el-button>
-              <el-button size="small" type="danger" @click="handleClick('register')">注册</el-button>
+              <el-button
+                size="small"
+                type="primary"
+                @click="handleClick('login')"
+                >登录</el-button
+              >
+              <el-button
+                size="small"
+                type="danger"
+                @click="handleClick('register')"
+                >注册</el-button
+              >
             </div>
           </el-col>
         </el-row>
       </div>
     </div>
-    <div v-if="state.isShow" class="mask" :class="{ 'mask-fade-out': state.leaveSlideDown }" @click="handleHideMenu">
-    </div>
-    <RegisterAndLogin :visible="state.visible" :handleFlag="state.handleFlag" @ok="handleOk" @cancel="handleCancel">
+    <RegisterAndLogin
+      :visible="state.visible"
+      :handleFlag="state.handleFlag"
+      @ok="handleOk"
+      @cancel="handleCancel"
+    >
     </RegisterAndLogin>
   </div>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  defineAsyncComponent,
-  reactive,
-} from "vue";
+import { defineComponent, defineAsyncComponent, reactive } from "vue";
 import service from "../utils/https";
 import urls from "../utils/urls";
 import { useStore } from "vuex";
@@ -268,7 +294,7 @@ export default defineComponent({
       getUser,
       handleSelect,
       routeChange,
-      handleHideMenu
+      handleHideMenu,
     };
   },
 });
@@ -276,50 +302,6 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-.nav-mobile {
-  display: flex;
-  line-height: 60px;
-
-  .nav-mobile-logo {
-    flex: 1;
-    margin-top: 5px;
-    margin-left: 10px;
-  }
-
-  .title {
-    flex: 3;
-    font-size: 24px;
-  }
-
-  .menu {
-    flex: 1;
-    font-size: 34px;
-    color: #409eff;
-  }
-}
-
-.nav-mobile-content {
-  font-size: 0.3rem;
-  height: 7.3rem;
-  width: 100%;
-  background-color: #fff;
-
-  .list {
-    .item {
-      line-height: 0.8rem;
-      color: #303133;
-      border-bottom: 1px solid #eee;
-
-      a {
-        display: block;
-        width: 100%;
-        color: #409eff;
-        text-decoration-line: none;
-      }
-    }
-  }
-}
-
 .nav {
   position: fixed;
   top: 0;
@@ -330,12 +312,12 @@ export default defineComponent({
   background-color: #fff;
 
   .nav-content {
-    width: 1200px;
+    width: 80%;
     margin: 0 auto;
   }
 
   .logo {
-    height: 50px;
+    height: 40px;
     margin: 0;
     border-radius: 50%;
     margin-top: 5px;
@@ -345,24 +327,31 @@ export default defineComponent({
     border-bottom: none;
   }
 
-  .el-menu--horizontal>.el-menu-item {
+  .el-menu--horizontal > .el-menu-item {
     cursor: pointer;
     color: #333;
   }
 
   .nav-right {
     position: relative;
-    padding-top: 15px;
-    text-align: right;
+    padding-top: 5px;
+    text-align: center;
 
-    .el-dropdown {
+    .el-dropdown-link {
       cursor: pointer;
-      padding-right: 60px;
+      margin-bottom: 30px;
+      // background: #000;
+      // text-align: center;
+      // margin: auto;
+      cursor: pointer;
+      // color: var(--el-color-primary);
+      display: flex;
+      align-items: center;
     }
 
     .user-img {
-      position: absolute;
-      top: -15px;
+      // position: absolute;
+      // top: -15px;
       right: 0;
       width: 50px;
       border-radius: 50%;

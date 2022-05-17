@@ -131,6 +131,7 @@ exports.delArticle = (req, res) => {
 
 // 前台文章列表
 exports.getArticleList = (req, res) => {
+  // console.log(req.query);
   let keyword = req.query.keyword || null;
   let state = req.query.state || '';
   let likes = req.query.likes || '';
@@ -456,6 +457,7 @@ exports.getArticleDetailByType = (req, res) => {
 // 文章详情
 exports.getArticleDetail = (req, res) => {
   let { id } = req.body;
+  // console.log(req.body);
   let type = Number(req.body.type) || 1; //文章类型 => 1: 普通文章，2: 简历，3: 管理员介绍
   let filter = Number(req.body.filter) || 1; //文章的评论过滤 => 1: 过滤，2: 不过滤
   // console.log('type:', type);

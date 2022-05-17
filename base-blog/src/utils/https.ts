@@ -9,13 +9,15 @@ export interface ResponseData {
 
 
 // console.log('import.meta.env: ', import.meta.env);
-
+// axios.defaults.withCredentials = true;
 // 创建 axios 实例
 let service: AxiosInstance | any;
 service = axios.create({
   baseURL: "/api", // api 的 base_url
-  timeout: 50000 // 请求超时时间
+  timeout: 50000, // 请求超时时间
+  withCredentials: true,
 });
+// service.defaults.withCredentials = true;
 // if (import.meta.env.MODE === "development") {
 //   service = axios.create({
 //     baseURL: "/api", // api 的 base_url

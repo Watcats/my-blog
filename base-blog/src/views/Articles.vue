@@ -1,12 +1,18 @@
 <template>
   <div class="left clearfix">
-    <h3 v-if="state.params.tag_id" class="left-title">{{ state.tag_name }} 相关的文章：</h3>
+    <h3 v-if="state.params.tag_id" class="left-title">
+      {{ state.tag_name }} 相关的文章：
+    </h3>
     <ul class="articles-list" id="list">
       <transition-group name="el-fade-in">
-        <li v-for="(article) in state.articlesList" :key="article._id" class="item">
-          <a :href="state.href + article._id" target="_blank">
-            <img class="wrap-img img-blur-done" :data-src="article.img_url" data-has-lazy-src="false"
-              src="../assets/bg.jpg" alt="文章封面" />
+        <li
+          v-for="article in state.articlesList"
+          :key="article._id"
+          class="item"
+        >
+          <router-link tag="a" :to="state.href + article._id" target="_blank">
+            <!-- <img class="wrap-img img-blur-done" :data-src="article.img_url" data-has-lazy-src="false"
+              src="../assets/bg.jpg" alt="文章封面" /> -->
             <div class="content">
               <h4 class="title">{{ article.title }}</h4>
               <p class="abstract">{{ article.desc }}</p>
@@ -19,7 +25,7 @@
                 </span>
               </div>
             </div>
-          </a>
+          </router-link>
         </li>
       </transition-group>
     </ul>
@@ -42,7 +48,7 @@ import {
   getQueryStringByName,
   timestampToTime,
 } from "../utils/utils";
-import { ArticlesParams, ArticlesData } from "../types/index";
+import { ArticlesParams, ArticlesData, UserInfo } from "../types/index";
 
 // 获取可视区域的高度
 const viewHeight = window.innerHeight || document.documentElement.clientHeight;
@@ -76,6 +82,25 @@ export default defineComponent({
     LoadEnd,
     LoadingCustom,
   },
+  computed: {
+    userInfo(): UserInfo {
+      let userInfo: UserInfo = {
+        _id: "",
+        name: "",
+        avatar: "",
+      };
+      if ((this as any).$store.state.user.userInfo) {
+        userInfo = (this as any).$store.state.user.userInfo;
+      }
+      if (window.sessionStorage.userInfo) {
+        userInfo = JSON.parse(window.sessionStorage.userInfo);
+        (this as any).$store.commit("SAVE_USER", {
+          userInfo,
+        });
+      }
+      return userInfo;
+    },
+  },
   watch: {
     $route: {
       handler(val: any, oldVal: any) {
@@ -100,7 +125,7 @@ export default defineComponent({
         pageNum: 1,
         pageSize: 10,
       } as ArticlesParams,
-      href: "http://localhost:3001/articleDetail?article_id="
+      href: "http://localhost:3001/articleDetail?article_id=",
       // import.meta.env.MODE === "development"
       //   ? "http://localhost:3000/articleDetail?article_id="
       //   : "https://biaochenxuying.cn/articleDetail?article_id="
@@ -112,12 +137,9 @@ export default defineComponent({
 
     const handleSearch = async (): Promise<void> => {
       state.isLoading = true;
-      const data: ArticlesData = await service.get(
-        urls.getArticleList,
-        {
-          params: state.params,
-        }
-      );
+      const data: ArticlesData = await service.get(urls.getArticleList, {
+        params: state.params,
+      });
       state.isLoading = false;
       state.articlesList = [...state.articlesList, ...data.list];
       state.total = data.count;
@@ -127,7 +149,7 @@ export default defineComponent({
       });
       if (data.list.length === 0 || state.total === state.articlesList.length) {
         state.isLoadEnd = true;
-        document.removeEventListener("scroll", () => { });
+        document.removeEventListener("scroll", () => {});
         window.onscroll = null;
       }
     };
@@ -139,10 +161,10 @@ export default defineComponent({
       state.articlesList = [];
       state.params.pageNum = 1;
       handleSearch();
-    }
+    };
 
     onMounted(() => {
-      handleSearch();
+      // handleSearch();
       window.onscroll = () => {
         if (getScrollTop() + getWindowHeight() > getDocumentHeight() - 100) {
           // 如果不是已经没有数据了，都可以继续滚动加载
@@ -158,9 +180,9 @@ export default defineComponent({
       state,
       formatTime,
       handleSearch,
-      routeChange
+      routeChange,
     };
-  }
+  },
 });
 </script>
 
@@ -181,7 +203,7 @@ export default defineComponent({
       line-height: 1.5;
     }
 
-    .item>div {
+    .item > div {
       padding-right: 140px;
     }
 

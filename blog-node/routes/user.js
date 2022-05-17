@@ -21,7 +21,7 @@ exports.getUser = (req, res) => {
   fetch(path, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json', 
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(params),
   })
@@ -90,12 +90,13 @@ exports.getUser = (req, res) => {
 
 exports.login = (req, res) => {
   let { email, password } = req.body;
+  // console.log(req.body);
   if (!email) {
-    responseClient(res, 400, 2, '用户邮箱不可为空');
+    responseClient(res, 200, 2, '用户邮箱不可为空');
     return;
   }
   if (!password) {
-    responseClient(res, 400, 2, '密码不可为空');
+    responseClient(res, 200, 2, '密码不可为空');
     return;
   }
   User.findOne({
@@ -108,7 +109,7 @@ exports.login = (req, res) => {
         req.session.userInfo = userInfo;
         responseClient(res, 200, 0, '登录成功', userInfo);
       } else {
-        responseClient(res, 400, 1, '用户名或者密码错误');
+        responseClient(res, 200, 1, '用户名或者密码错误');
       }
     })
     .catch(err => {

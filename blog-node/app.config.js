@@ -13,16 +13,14 @@ exports.APP = {
 	LIMIT: 10,
 	PORT: 8000,
 	ROOT_PATH: __dirname,
-	NAME: 'biaochenxuying',
-	URL: 'http://biaochenxuying.cn/main.html',
+	NAME: 'my-blog',
+	URL: 'http://localhost:3001',
 	FRONT_END_PATH: path.join(__dirname, '..', 'biaochenxuying'),
 };
 
 exports.CROSS_DOMAIN = {
 	allowedOrigins: [
-		'http://biaochenxuying.cn/main.html',
-		'http://biaochenxuying.cn',
-		'https://github.com/biaochenxuying',
+		'http://localhost:3001',
 	],
 	allowedReferer: 'biaochenxuying',
 };
