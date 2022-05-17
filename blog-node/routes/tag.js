@@ -50,6 +50,7 @@ exports.getTagList = (req, res) => {
     }
   });
 };
+
 exports.addTag = (req, res) => {
   let { name, desc } = req.body;
   Tag.findOne({
@@ -77,6 +78,7 @@ exports.addTag = (req, res) => {
       responseClient(res);
     });
 };
+
 exports.delTag = (req, res) => {
   let { id } = req.body;
   Tag.deleteMany({ _id: id })

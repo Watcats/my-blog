@@ -1,6 +1,6 @@
 /**
  * Environment module.
- * @file Environment 环境配置
+ * @file Environment 线上和开发环境配置
  * @module environment
  * @author myblog 
  */

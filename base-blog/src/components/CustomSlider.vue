@@ -26,11 +26,6 @@
     <div class="introduce">
       <div class="title">推荐</div>
       <div class="content">
-        <!-- <img
-          style="width:100%;"
-          src="../assets/BiaoChenXuYing.png"
-          alt="全栈修炼"
-        /> -->
         可以推荐
       </div>
     </div>

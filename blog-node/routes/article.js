@@ -9,48 +9,33 @@ exports.addArticle = (req, res) => {
   // }
   const {
     title,
-    author,
     keyword,
-    content,
+    author,
     desc,
-    img_url,
-    tags,
-    category,
-    state,
+    content,
+    // img_url,
     type,
+    state,
+    tags,
     origin,
+    // category,
   } = req.body;
   let tempArticle = null;
-  if (img_url) {
-    tempArticle = new Article({
-      title,
-      author,
-      keyword: keyword ? keyword.split(',') : [],
-      content,
-      numbers: content.length,
-      desc,
-      img_url,
-      tags: tags ? tags.split(',') : [],
-      category: category ? category.split(',') : [],
-      state,
-      type,
-      origin,
-    });
-  } else {
-    tempArticle = new Article({
-      title,
-      author,
-      keyword: keyword ? keyword.split(',') : [],
-      content,
-      numbers: content.length,
-      desc,
-      tags: tags ? tags.split(',') : [],
-      category: category ? category.split(',') : [],
-      state,
-      type,
-      origin,
-    });
-  }
+  // if (img_url) //暂时不做文章封面，所有与图片有关的需要上线后再测试
+  tempArticle = new Article({
+    title,
+    keyword: keyword ? keyword.split(',') : [],
+    author,
+    desc,
+    content,
+    numbers: content.length,
+    type,
+    state,
+    // img_url,
+    tags: tags ? tags.split(',') : [],
+    // category: category ? category.split(',') : [],
+    origin,
+  });
 
   tempArticle
     .save()
@@ -74,33 +59,34 @@ exports.updateArticle = (req, res) => {
   // 	return;
   // }
   const {
+    id,//这个id是数据库自动生成的id
     title,
-    author,
     keyword,
-    content,
+    author,
     desc,
-    img_url,
-    tags,
-    category,
-    state,
+    content,
+    // img_url,
     type,
+    state,
+    tags,
     origin,
-    id,
+    // category,
   } = req.body;
   // Article.update(
   Article.updateOne(
     { _id: id },
     {
       title,
-      author,
       keyword: keyword ? keyword.split(',') : [],
-      content,
+      author,
       desc,
-      img_url,
-      tags: tags ? tags.split(',') : [],
-      category: category ? category.split(',') : [],
-      state,
+      content,
+      numbers: content.length,
       type,
+      state,
+      // img_url,
+      tags: tags ? tags.split(',') : [],
+      // category: category ? category.split(',') : [],
       origin,
     },
   )
@@ -132,18 +118,21 @@ exports.delArticle = (req, res) => {
 // 前台文章列表
 exports.getArticleList = (req, res) => {
   // console.log(req.query);
+  let author = req.body.user || null;
   let keyword = req.query.keyword || null;
   let state = req.query.state || '';
   let likes = req.query.likes || '';
   let tag_id = req.query.tag_id || '';
-  let category_id = req.query.category_id || '';
-  let article = req.query.article || '';
+  // let category_id = req.query.category_id || '';
+  // let article = req.query.article || '';//所有文章
   let pageNum = parseInt(req.query.pageNum) || 1;
   let pageSize = parseInt(req.query.pageSize) || 10;
+
   // 如果是文章归档 返回全部文章
-  if (article) {
-    pageSize = 1000;
-  }
+  // if (article) {
+  //   pageSize = 1000;
+  // }
+
   let conditions = {};
   if (!state) {
     if (keyword) {
@@ -187,18 +176,18 @@ exports.getArticleList = (req, res) => {
       let fields = {
         title: 1,
         desc: 1,
-        img_url: 1,
+        // img_url: 1,
         tags: 1,
-        category: 1,
+        // category: 1,
         meta: 1,
         create_time: 1,
       };
-      if(article){
-        fields = {
-          title: 1,
-          create_time: 1,
-        };
-      }
+      // if (article) {
+      //   fields = {
+      //     title: 1,
+      //     create_time: 1,
+      //   };
+      // }
       let options = {
         skip: skip,
         limit: pageSize,
@@ -216,18 +205,20 @@ exports.getArticleList = (req, res) => {
               return b.meta.likes - a.meta.likes;
             });
             responseData.list = result;
-          } else if (category_id) {
-            // console.log('category_id :', category_id);
-            // 根据 分类 id 返回数据
-            result.forEach(item => {
-              if (item.category.indexOf(category_id) > -1) {
-                newList.push(item);
-              }
-            });
-            let len = newList.length;
-            responseData.count = len;
-            responseData.list = newList;
-          } else if (tag_id) {
+          }
+          // else if (category_id) {
+          //   // console.log('category_id :', category_id);
+          //   // 根据 分类 id 返回数据
+          //   result.forEach(item => {
+          //     if (item.category.indexOf(category_id) > -1) {
+          //       newList.push(item);
+          //     }
+          //   });
+          //   let len = newList.length;
+          //   responseData.count = len;
+          //   responseData.list = newList;
+          // } 
+          else if (tag_id) {
             // console.log('tag_id :', tag_id);
             // 根据标签 id 返回数据
             result.forEach(item => {
@@ -238,34 +229,35 @@ exports.getArticleList = (req, res) => {
             let len = newList.length;
             responseData.count = len;
             responseData.list = newList;
-          } else if (article) {
-            const archiveList = []
-            let obj = {}
-            // 按年份归档 文章数组
-            result.forEach((e) => {
-              let year = e.create_time.getFullYear()
-              // let month = e.create_time.getMonth()
-              if(!obj[year]){
-                obj[year] = []
-                obj[year].push(e)
-              } else {
-                obj[year].push(e)
-              }
-            })
-            for (const key in obj) {
-              if (obj.hasOwnProperty(key)) {
-                const element = obj[key];
-                let item = {}
-                item.year = key
-                item.list = element
-                archiveList.push(item)
-              }
-            }
-            archiveList.sort((a, b) => {
-              return b.year - a.year;
-            });
-            responseData.list = archiveList;
           }
+          // else if (article) {
+          //   const archiveList = []
+          //   let obj = {}
+          //   // 按年份归档 文章数组
+          //   result.forEach((e) => {
+          //     let year = e.create_time.getFullYear()
+          //     // let month = e.create_time.getMonth()
+          //     if (!obj[year]) {
+          //       obj[year] = []
+          //       obj[year].push(e)
+          //     } else {
+          //       obj[year].push(e)
+          //     }
+          //   })
+          //   for (const key in obj) {
+          //     if (obj.hasOwnProperty(key)) {
+          //       const element = obj[key];
+          //       let item = {}
+          //       item.year = key
+          //       item.list = element
+          //       archiveList.push(item)
+          //     }
+          //   }
+          //   archiveList.sort((a, b) => {
+          //     return b.year - a.year;
+          //   });
+          //   responseData.list = archiveList;
+          // }
           else {
             responseData.list = result;
           }
@@ -277,102 +269,102 @@ exports.getArticleList = (req, res) => {
 };
 
 // 后台文章列表
-exports.getArticleListAdmin = (req, res) => {
-  let keyword = req.query.keyword || null;
-  let state = req.query.state || '';
-  let likes = req.query.likes || '';
-  let pageNum = parseInt(req.query.pageNum) || 1;
-  let pageSize = parseInt(req.query.pageSize) || 10;
-  let conditions = {};
-  if (!state) {
-    if (keyword) {
-      const reg = new RegExp(keyword, 'i'); //不区分大小写
-      conditions = {
-        $or: [{ title: { $regex: reg } }, { desc: { $regex: reg } }],
-      };
-    }
-  } else if (state) {
-    state = parseInt(state);
-    if (keyword) {
-      const reg = new RegExp(keyword, 'i');
-      conditions = {
-        $and: [
-          { $or: [{ state: state }] },
-          {
-            $or: [
-              { title: { $regex: reg } },
-              { desc: { $regex: reg } },
-              { keyword: { $regex: reg } },
-            ],
-          },
-        ],
-      };
-    } else {
-      conditions = { state };
-    }
-  }
+// exports.getArticleListAdmin = (req, res) => {
+//   let keyword = req.query.keyword || null;
+//   let state = req.query.state || '';
+//   let likes = req.query.likes || '';
+//   let pageNum = parseInt(req.query.pageNum) || 1;
+//   let pageSize = parseInt(req.query.pageSize) || 10;
+//   let conditions = {};
+//   if (!state) {
+//     if (keyword) {
+//       const reg = new RegExp(keyword, 'i'); //不区分大小写
+//       conditions = {
+//         $or: [{ title: { $regex: reg } }, { desc: { $regex: reg } }],
+//       };
+//     }
+//   } else if (state) {
+//     state = parseInt(state);
+//     if (keyword) {
+//       const reg = new RegExp(keyword, 'i');
+//       conditions = {
+//         $and: [
+//           { $or: [{ state: state }] },
+//           {
+//             $or: [
+//               { title: { $regex: reg } },
+//               { desc: { $regex: reg } },
+//               { keyword: { $regex: reg } },
+//             ],
+//           },
+//         ],
+//       };
+//     } else {
+//       conditions = { state };
+//     }
+//   }
 
-  let skip = pageNum - 1 < 0 ? 0 : (pageNum - 1) * pageSize;
-  let responseData = {
-    count: 0,
-    list: [],
-  };
-  Article.countDocuments({}, (err, count) => {
-    if (err) {
-      console.log('Error:' + err);
-    } else {
-      responseData.count = count;
-      // 待返回的字段
-      let fields = {
-        title: 1,
-        author: 1,
-        keyword: 1,
-        // content: 1,
-        desc: 1,
-        img_url: 1,
-        tags: 1,
-        category: 1,
-        state: 1,
-        type: 1,
-        origin: 1,
-        comments: 1,
-        like_User_id: 1,
-        meta: 1,
-        create_time: 1,
-        // update_time: 1,
-      };
-      let options = {
-        skip: skip,
-        limit: pageSize,
-        sort: { create_time: -1 },
-      };
-      Article.find(conditions, fields, options, (error, result) => {
-        if (err) {
-          console.error('Error:' + error);
-          // throw error;
-        } else {
-          if (likes) {
-            result.sort((a, b) => {
-              return b.meta.likes - a.meta.likes;
-            });
-          }
-          responseData.list = result;
-          responseClient(res, 200, 0, '操作成功！', responseData);
-        }
-      })
-        .populate([
-          { path: 'tags' },
-          { path: 'comments' },
-          { path: 'category' },
-        ])
-        .exec((err, doc) => {
-          // console.log("doc:");          // aikin
-          // console.log("doc.tags:",doc.tags);          // aikin
-          // console.log("doc.category:",doc.category);           // undefined
-        });
-    }
-  });
-};
+//   let skip = pageNum - 1 < 0 ? 0 : (pageNum - 1) * pageSize;
+//   let responseData = {
+//     count: 0,
+//     list: [],
+//   };
+//   Article.countDocuments({}, (err, count) => {
+//     if (err) {
+//       console.log('Error:' + err);
+//     } else {
+//       responseData.count = count;
+//       // 待返回的字段
+//       let fields = {
+//         title: 1,
+//         author: 1,
+//         keyword: 1,
+//         // content: 1,
+//         desc: 1,
+//         img_url: 1,
+//         tags: 1,
+//         category: 1,
+//         state: 1,
+//         type: 1,
+//         origin: 1,
+//         comments: 1,
+//         like_User_id: 1,
+//         meta: 1,
+//         create_time: 1,
+//         // update_time: 1,
+//       };
+//       let options = {
+//         skip: skip,
+//         limit: pageSize,
+//         sort: { create_time: -1 },
+//       };
+//       Article.find(conditions, fields, options, (error, result) => {
+//         if (err) {
+//           console.error('Error:' + error);
+//           // throw error;
+//         } else {
+//           if (likes) {
+//             result.sort((a, b) => {
+//               return b.meta.likes - a.meta.likes;
+//             });
+//           }
+//           responseData.list = result;
+//           responseClient(res, 200, 0, '操作成功！', responseData);
+//         }
+//       })
+//         .populate([
+//           { path: 'tags' },
+//           { path: 'comments' },
+//           { path: 'category' },
+//         ])
+//         .exec((err, doc) => {
+//           // console.log("doc:");          // aikin
+//           // console.log("doc.tags:",doc.tags);          // aikin
+//           // console.log("doc.category:",doc.category);           // undefined
+//         });
+//     }
+//   });
+// };
 
 // 文章点赞
 exports.likeArticle = (req, res) => {
@@ -392,10 +384,10 @@ exports.likeArticle = (req, res) => {
           let new_like_user = {};
           new_like_user.id = user._id;
           new_like_user.name = user.name;
-          new_like_user.avatar = user.avatar;
-          new_like_user.create_time = user.create_time;
+          // new_like_user.avatar = user.avatar;
+          // new_like_user.create_time = user.create_time;
           new_like_user.type = user.type;
-          new_like_user.introduce = user.introduce;
+          // new_like_user.introduce = user.introduce;
           like_users_arr.push(new_like_user);
           fields.like_users = like_users_arr;
           // Article.update({ _id: id }, fields)
@@ -419,7 +411,7 @@ exports.likeArticle = (req, res) => {
     });
 };
 
-// 文章详情
+// 获取网页介绍，现在已经被整合到获取文章详情里面了
 exports.getArticleDetailByType = (req, res) => {
   let { type } = req.body;
   if (!type) {
@@ -475,6 +467,7 @@ exports.getArticleDetail = (req, res) => {
         Article.updateOne({ _id: id }, { meta: data.meta })
           .then(result => {
             // console.log('data:',data)
+            //过滤未审核的评论，现在暂时没用
             if (filter === 1) {
               const arr = data.comments;
               for (let i = arr.length - 1; i >= 0; i--) {
@@ -503,13 +496,15 @@ exports.getArticleDetail = (req, res) => {
           });
       }
     })
-      .populate([{ path: 'tags' }, { path: 'category' }, { path: 'comments' }])
+      .populate([{ path: 'tags' },
+      // { path: 'category' },
+      { path: 'comments' }])
       .exec((err, doc) => {
         // console.log("doc:");          // aikin
         // console.log("doc.tags:",doc.tags);          // aikin
         // console.log("doc.category:",doc.category);           // undefined
       });
-  } else {
+  } else {//网站介绍，一般只有一篇
     Article.findOne({ type: type }, (Error, data) => {
       if (Error) {
         console.log('Error:' + Error);
@@ -550,7 +545,9 @@ exports.getArticleDetail = (req, res) => {
         }
       }
     })
-      .populate([{ path: 'tags' }, { path: 'category' }, { path: 'comments' }])
+      .populate([{ path: 'tags' },
+      //  { path: 'category' }, 
+       { path: 'comments' }])
       .exec((err, doc) => {
         // console.log("doc:");          // aikin
         // console.log("doc.tags:",doc.tags);          // aikin

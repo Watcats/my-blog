@@ -36,7 +36,7 @@ exports.getCommentList = (req, res) => {
     count: 0,
     list: [],
   };
-
+  //计数，获取所有评论
   Comment.countDocuments({}, (err, count) => {
     if (err) {
       console.error('Error:' + err);
@@ -91,7 +91,7 @@ exports.addComment = (req, res) => {
           user_id: result._id,
           name: result.name,
           type: result.type,
-          avatar: result.avatar,
+          // avatar: result.avatar,
         };
         let comment = new Comment({
           article_id: article_id,
@@ -157,7 +157,7 @@ exports.addThirdComment = (req, res) => {
               user_id: userResult._id,
               name: userResult.name,
               type: userResult.type,
-              avatar: userResult.avatar,
+              // avatar: userResult.avatar,
             };
             let item = {
               user: userInfo,
@@ -169,7 +169,7 @@ exports.addThirdComment = (req, res) => {
               { _id: comment_id },
               {
                 other_comments: commentResult.other_comments,
-                is_handle: 2,
+                is_handle: 1,//默认过审核
               },
             )
               .then(result => {
@@ -183,13 +183,7 @@ exports.addThirdComment = (req, res) => {
                     Article.updateOne({ _id: article_id }, { meta: data.meta })
                       .then(Articleresult => {
                         // console.log('result --------------:', Articleresult);
-                        responseClient(
-                          res,
-                          200,
-                          0,
-                          '操作成功 ！',
-                          Articleresult,
-                        );
+                        responseClient(res, 200, 0, '操作成功 ！', Articleresult,);
                       })
                       .catch(err => {
                         // console.log('err ===========:', err);

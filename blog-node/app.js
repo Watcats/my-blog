@@ -30,6 +30,7 @@ app.use(
   }),
 );
 
+//拦截请求查看sessionid和确定当前用户,保持登陆状态
 app.use(function (req, res, next) {
   console.log('session_id:' + req.session.id);
   console.log('session_content:' + req.session.userInfo);

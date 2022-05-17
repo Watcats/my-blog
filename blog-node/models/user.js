@@ -15,7 +15,7 @@ const adminSchema = new mongoose.Schema({
   // oauth_id: { type: String, default: '' },
 
   //第三方授权登录的 github 的用户 id
-  github_id: { type: String, default: '' },
+  // github_id: { type: String, default: '' },
 
   // 名字
   name: { type: String, required: true, default: '' },
@@ -44,7 +44,7 @@ const adminSchema = new mongoose.Schema({
   avatar: { type: String, default: 'user' },
 
   // 地址
-  location: { type: String, default: 'user' },
+  // location: { type: String, default: 'user' },
 
   // 密码
   password: {

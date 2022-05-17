@@ -6,7 +6,7 @@ interface Config {
 }
 // const config: Config = {
 //   oauth_uri: "https://github.com/login/oauth/authorize",
-//   redirect_uri: "https://biaochenxuying.cn/login", // 请修改成你的信息
+//   redirect_uri: "https://blog.cn/login", // 请修改成你的信息
 //   client_id: "XXXXXXXXX", // 请修改成你的信息
 //   client_secret: "XXXXXXXXX" // 请修改成你的信息
 // };
