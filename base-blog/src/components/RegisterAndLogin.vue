@@ -72,16 +72,6 @@ export default defineComponent({
     });
 
     const route = useRoute();
-    // const handleOAuth = (): void => {
-    //   // 保存授权前的页面链接内容
-    //   let preventHistory: object = {
-    //     name: route.name,
-    //     query: route.query,
-    //   };
-    //   window.sessionStorage.preventHistory = JSON.stringify(preventHistory);
-    //   // window.location.href = 'https://github.com/login/oauth/authorize?client_id=6de90ab270aea2bdb01c&redirect_uri=http://biaochenxuying.cn/login'
-    //   window.location.href = `${config.oauth_uri}?client_id=${config.client_id}&redirect_uri=${config.redirect_uri}`;
-    // };
 
     const submit = async (): Promise<void> => {
       let data: any = "";
@@ -89,9 +79,10 @@ export default defineComponent({
       if (props.handleFlag === "register") {
         data = await service.post(urls.register, state.params);
       } else {
-        console.log(state.params)
+        // console.log(state.params)
         data = await service.post(urls.login, state.params);
       }
+      // console.log(data)
       state.btnLoading = false;
 
       const userInfo: UserInfo = {
@@ -105,7 +96,7 @@ export default defineComponent({
       window.sessionStorage.userInfo = JSON.stringify(userInfo);
       context.emit("ok", false);
       ElMessage({
-        message: "操作成功",
+        message: "登录成功",
         type: "success",
       });
     };
@@ -164,7 +155,6 @@ export default defineComponent({
 
     return {
       state,
-      // handleOAuth,
       handleOk,
       submit,
       cancel,

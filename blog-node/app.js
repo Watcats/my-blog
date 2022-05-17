@@ -31,8 +31,11 @@ app.use(
 );
 
 app.use(function (req, res, next) {
-  console.log('session_id:'+req.session.id);
-  console.log('session_content:'+req.session.userInfo);
+  console.log('session_id:' + req.session.id);
+  console.log('session_content:' + req.session.userInfo);
+  if (req.session.userInfo) {
+    console.log('user:' + req.session.userInfo.name);
+  }
   next();
 });
 

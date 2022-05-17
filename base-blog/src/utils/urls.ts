@@ -4,6 +4,7 @@ export const urls: any = {
   logout: "logout",
   register: "register",
   getUser: "getUser",
+  currentUser: "currentUser",
 
   addComment: "addComment",
   addThirdComment: "addThirdComment",

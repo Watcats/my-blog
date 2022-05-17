@@ -33,10 +33,10 @@
               <el-col :span="8">
                 <img class="user-img" src="../assets/user.png" alt="头像" />
               </el-col>
-              <el-col span="8" style="margin-top: 15px;">
+              <el-col span="8" style="margin-top: 15px">
                 {{ userInfo.name }}
               </el-col>
-              <el-col :span="8" style="margin-top: 10px;">
+              <el-col :span="8" style="margin-top: 10px">
                 <el-button
                   size="small"
                   type="danger"
