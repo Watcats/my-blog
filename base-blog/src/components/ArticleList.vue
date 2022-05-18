@@ -1,8 +1,5 @@
 <template>
-  <div class="left clearfix">
-    <h3 v-if="state.params.tag_id" class="left-title">
-      {{ state.tag_name }} 相关的文章：
-    </h3>
+  <div class="list-content">
     <ul class="articles-list" id="list">
       <transition-group name="el-fade-in">
         <li
@@ -10,9 +7,7 @@
           :key="article._id"
           class="item"
         >
-          <a :href="state.href + article._id">
-            <!-- <img class="wrap-img img-blur-done" :data-src="article.img_url" data-has-lazy-src="false"
-              src="../assets/bg.jpg" alt="文章封面" /> -->
+          <router-link :to="state.href + article._id">
             <div class="content">
               <h4 class="title">{{ article.title }}</h4>
               <p class="abstract">{{ article.desc }}</p>
@@ -25,23 +20,33 @@
                 </span>
               </div>
             </div>
-          </a>
+          </router-link>
+          <el-button
+            size="small"
+            type="primary"
+            @click="handleClick('update', article._id)"
+            >修改文章
+          </el-button>
+          <el-button
+            size="small"
+            type="danger"
+            @click="handleClick('delete', article._id)"
+            >删除文章
+          </el-button>
         </li>
       </transition-group>
     </ul>
-    <LoadingCustom v-if="state.isLoading"></LoadingCustom>
-    <LoadEnd v-if="state.isLoadEnd"></LoadEnd>
   </div>
 </template>
-
 <script lang="ts">
 import { defineComponent, reactive, onMounted, nextTick } from "vue";
 import { useStore } from "vuex";
 import { key } from "../store";
 import service from "../utils/https";
 import urls from "../utils/urls";
-import LoadEnd from "../components/LoadEnd.vue";
-import LoadingCustom from "../components/Loading.vue";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { useRoute, useRouter } from "vue-router";
+import { ArticlesParams, ArticlesData, UserInfo } from "../types/index";
 import {
   throttle,
   getScrollTop,
@@ -50,40 +55,9 @@ import {
   getQueryStringByName,
   timestampToTime,
 } from "../utils/utils";
-import { ArticlesParams, ArticlesData, UserInfo } from "../types/index";
-
-// 获取可视区域的高度
-const viewHeight = window.innerHeight || document.documentElement.clientHeight;
-// 用新的 throttle 包装 scroll 的回调
-const lazyload = throttle(() => {
-  // 获取所有的图片标签
-  const imgs = document.querySelectorAll("#list .item img");
-  // num 用于统计当前显示到了哪一张图片，避免每次都从第一张图片开始检查是否露出
-  let num = 0;
-  for (let i = num; i < imgs.length; i++) {
-    // 用可视区域高度减去元素顶部距离可视区域顶部的高度
-    let distance = viewHeight - imgs[i].getBoundingClientRect().top;
-    let imgItem: any = imgs[i];
-    // 如果可视区域高度大于等于元素顶部距离可视区域顶部的高度，说明元素露出
-    if (distance >= 100) {
-      // 给元素写入真实的 src，展示图片
-      let hasLaySrc = imgItem.getAttribute("data-has-lazy-src");
-      if (hasLaySrc === "false") {
-        imgItem.src = imgItem.getAttribute("data-src");
-        imgItem.setAttribute("data-has-lazy-src", "true");
-      }
-      // 前 i 张图片已经加载完毕，下次从第 i+1 张开始检查是否露出
-      num = i + 1;
-    }
-  }
-}, 1000);
 
 export default defineComponent({
-  name: "Home",
-  components: {
-    LoadEnd,
-    LoadingCustom,
-  },
+  name: "ArticleList",
   watch: {
     $route: {
       handler(val: any, oldVal: any) {
@@ -94,12 +68,12 @@ export default defineComponent({
   },
   setup(props, context) {
     const store = useStore(key);
+    const router = useRouter();
     const state = reactive({
       isLoadEnd: false,
       isLoading: false,
       articlesList: [] as Array<any>,
       total: 0,
-      tag_name: decodeURI(getQueryStringByName("tag_name")),
       params: {
         user: "",
         keyword: "",
@@ -114,6 +88,38 @@ export default defineComponent({
 
     const formatTime = (value: string | Date): string => {
       return timestampToTime(value, true);
+    };
+
+    const handleClick = (value: string, id: string): void => {
+      if (value === "update") {
+        router.push({ path: "/ArticleUpdate", query: { article_id: id } });
+      } else if (value === "delete") {
+        ElMessageBox.confirm("要删除文章吗, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+          .then(() => {
+            service.post(urls.delArticle, { id });
+            ElMessage({
+              message: "删除成功!",
+              type: "success",
+            });
+            location.reload();
+          })
+          .catch(() => {
+            ElMessage({
+              message: "已取消删除",
+              type: "info",
+            });
+          });
+      }
+    };
+
+    const routeChange = (val: any, oldVal: any): void => {
+      state.articlesList = [];
+      state.params.pageNum = 1;
+      // handleSearch();
     };
 
     const handleSearch = async (): Promise<void> => {
@@ -134,16 +140,17 @@ export default defineComponent({
         state.params.pageNum +
         "&pageSize=" +
         state.params.pageSize;
+      console.log(URL);
+      console.log("getList: " + state.params.user);
+
       const data: ArticlesData = await service.get(URL);
-      // console.log(data);
       state.isLoading = false;
       state.articlesList = [...state.articlesList, ...data.list];
-      // console.log(state.articlesList);
       state.total = data.count;
       state.params.pageNum++;
-      nextTick(() => {
-        lazyload();
-      });
+      // nextTick(() => {
+      //   lazyload();
+      // });
       if (data.list.length === 0 || state.total === state.articlesList.length) {
         state.isLoadEnd = true;
         document.removeEventListener("scroll", () => {});
@@ -151,13 +158,17 @@ export default defineComponent({
       }
     };
 
-    const routeChange = (val: any, oldVal: any): void => {
-      state.articlesList = [];
-      state.params.pageNum = 1;
-      // handleSearch();
+    const getCurrentUser = async (): Promise<void> => {
+      const data: UserInfo = await service.get(urls.currentUser, {
+        withCredentials: true,
+      });
+      state.params.user = data.name;
+      console.log("getuser: " + state.params.user);
     };
 
     onMounted(() => {
+      // getCurrentUser();
+      // console.log(state.params.user);
       let userInfo: UserInfo = {
         _id: "",
         name: "",
@@ -169,7 +180,7 @@ export default defineComponent({
           userInfo,
         });
       }
-      // state.params.user = userInfo.name;
+      state.params.user = userInfo.name;
 
       handleSearch();
       window.onscroll = () => {
@@ -180,21 +191,21 @@ export default defineComponent({
           }
         }
       };
-      document.addEventListener("scroll", lazyload);
     });
 
     return {
       state,
+      routeChange,
       formatTime,
       handleSearch,
-      routeChange,
+      handleClick,
     };
   },
 });
 </script>
 
 <style lang="less" scoped>
-.left {
+.list-content {
   .articles-list {
     margin: 0;
     padding: 0;
@@ -232,10 +243,10 @@ export default defineComponent({
     li {
       line-height: 20px;
       position: relative;
-      // width: 100%;
+      width: 80%;
       padding: 15px 0px;
       padding-right: 150px;
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid #b69f9f;
       word-wrap: break-word;
       cursor: pointer;
 
@@ -281,4 +292,3 @@ export default defineComponent({
   }
 }
 </style>
-

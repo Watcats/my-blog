@@ -206,9 +206,8 @@ export default defineComponent({
         spinner: "el-icon-loading",
         background: "rgba(255, 255, 255, 0.7)",
       });
-      const data: UserInfo = await service.get(
+      const data = await service.get(
         urls.currentUser,
-        {},
         { withCredentials: true }
       );
       loading.close();

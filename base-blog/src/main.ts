@@ -12,6 +12,7 @@ import {
     ElFormItem,
     ElInput,
     ElMessage,
+    ElMessageBox,
     ElMenu,
     ElMenuItem,
     ElRow,
@@ -50,6 +51,7 @@ app.component(ElForm.name, ElForm);
 app.component(ElFormItem.name, ElFormItem);
 app.component(ElInput.name, ElInput);
 app.component(ElMessage.name, ElMessage);
+app.component(ElMessageBox.name, ElMessageBox);
 app.component(ElMenu.name, ElMenu);
 app.component(ElMenuItem.name, ElMenuItem);
 app.component(ElRow.name, ElRow);

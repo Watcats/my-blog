@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <el-container>
-      <el-menu default-active="1" class="el-menu-demo" mode="horizontal">
+      <el-menu  class="el-menu-demo" mode="horizontal">
         <el-menu-item index="1">
           <router-link to="/ArticleList">文章列表</router-link>
         </el-menu-item>

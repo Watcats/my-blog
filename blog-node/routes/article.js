@@ -1,12 +1,9 @@
 import Article from '../models/article';
 import User from '../models/user';
+import Tag from '../models/tag';
 import { responseClient, timestampToTime } from '../util/util';
 
-exports.addArticle = (req, res) => {
-  // if (!req.session.userInfo) {
-  // 	responseClient(res, 200, 1, '您还没登录,或者登录信息已过期，请重新登录！');
-  // 	return;
-  // }
+exports.addArticle = async (req, res) => {
   const {
     title,
     keyword,
@@ -20,21 +17,42 @@ exports.addArticle = (req, res) => {
     origin,
     // category,
   } = req.body;
+  //数据库中存的是另一个文档对象的ObjectId,也就是_id字段,要将string转换成_id
+  let tag_arr = tags ? tags.split(',') : [];
+  let tags_id = [];
+  for (let i = 0; i < tag_arr.length; i++) {
+    await Tag.findOne({
+      name: tag_arr[i],
+    })
+      .then(result => {
+        if (result) {
+          tags_id.push(result._id)
+        } else {//没有这个tag就新建一个
+          let tag_new = new Tag({
+            name: tag_arr[i],
+            desc: '',
+          });
+          tag_new.save().then(data => {
+            tags_id.push(data._id);
+          })
+        }
+      })
+  }
   let tempArticle = null;
   // if (img_url) //暂时不做文章封面，所有与图片有关的需要上线后再测试
   tempArticle = new Article({
-    title,
+    title: title,
     keyword: keyword ? keyword.split(',') : [],
-    author,
-    desc,
-    content,
+    author: author,
+    desc: desc,
+    content: content,
     numbers: content.length,
-    type,
-    state,
+    type: type,
+    state: state,
     // img_url,
-    tags: tags ? tags.split(',') : [],
+    tags: tags_id,
     // category: category ? category.split(',') : [],
-    origin,
+    origin: origin,
   });
 
   tempArticle
@@ -53,7 +71,7 @@ exports.addArticle = (req, res) => {
     });
 };
 
-exports.updateArticle = (req, res) => {
+exports.updateArticle = async (req, res) => {
   // if (!req.session.userInfo) {
   // 	responseClient(res, 200, 1, '您还没登录,或者登录信息已过期，请重新登录！');
   // 	return;
@@ -72,22 +90,39 @@ exports.updateArticle = (req, res) => {
     origin,
     // category,
   } = req.body;
+  let tag_arr = tags ? tags.split(',') : [];
+  // console.log("tag_arr: "+tag_arr);
+  let tags_id = [];
+  for (let i = 0; i < tag_arr.length; i++) {
+    await Tag.findOne({
+      name: tag_arr[i],
+    })
+      .then(result => {
+        if (result) {
+          tags_id.push(result._id)
+        } else {//没有这个tag就新建一个
+          let tag_new = new Tag({
+            name: tag_arr[i],
+            desc: '',
+          });
+          tag_new.save().then(result => {
+            tags_id.push(result._id);
+          })
+        }
+      })
+  }
   // Article.update(
   Article.updateOne(
     { _id: id },
     {
-      title,
+      title: title,
       keyword: keyword ? keyword.split(',') : [],
-      author,
-      desc,
-      content,
+      desc: desc,
+      content: content,
       numbers: content.length,
-      type,
-      state,
       // img_url,
-      tags: tags ? tags.split(',') : [],
+      tags: tags_id,
       // category: category ? category.split(',') : [],
-      origin,
     },
   )
     .then(result => {
@@ -468,27 +503,26 @@ exports.getArticleDetail = (req, res) => {
           .then(result => {
             // console.log('data:',data)
             //过滤未审核的评论，现在暂时没用
-            if (filter === 1) {
-              const arr = data.comments;
-              for (let i = arr.length - 1; i >= 0; i--) {
-                const e = arr[i];
-                if (e.state !== 1) {
-                  arr.splice(i, 1);
-                }
-                const newArr = e.other_comments;
-                const length = newArr.length;
-                if (length) {
-                  for (let j = length - 1; j >= 0; j--) {
-                    const item = newArr[j];
-                    if (item.state !== 1) {
-                      newArr.splice(j, 1);
-                    }
-                  }
-                }
-              }
-            }
+            // if (filter === 1) {
+            //   const arr = data.comments;
+            //   for (let i = arr.length - 1; i >= 0; i--) {
+            //     const e = arr[i];
+            //     if (e.state !== 1) {
+            //       arr.splice(i, 1);
+            //     }
+            //     const newArr = e.other_comments;
+            //     const length = newArr.length;
+            //     if (length) {
+            //       for (let j = length - 1; j >= 0; j--) {
+            //         const item = newArr[j];
+            //         if (item.state !== 1) {
+            //           newArr.splice(j, 1);
+            //         }
+            //       }
+            //     }
+            //   }
+            // }
 
-            responseClient(res, 200, 0, '操作成功 ！', data);
           })
           .catch(err => {
             console.error('err :', err);
@@ -499,11 +533,16 @@ exports.getArticleDetail = (req, res) => {
       .populate([{ path: 'tags' },
       // { path: 'category' },
       { path: 'comments' }])
-      .exec((err, doc) => {
-        // console.log("doc:");          // aikin
-        // console.log("doc.tags:",doc.tags);          // aikin
-        // console.log("doc.category:",doc.category);           // undefined
-      });
+      // .exec((err, doc) => {
+      //   // console.log("doc:");          // aikin
+      //   // console.log("doc.tags:",doc.tags);          // aikin
+      //   // console.log("doc.category:",doc.category);           // undefined
+
+      // })
+      .then(result => {
+        responseClient(res, 200, 0, '操作成功 ！', result);
+
+      })
   } else {//网站介绍，一般只有一篇
     Article.findOne({ type: type }, (Error, data) => {
       if (Error) {

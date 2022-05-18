@@ -26,7 +26,7 @@ exports.getTagList = (req, res) => {
     } else {
       responseData.count = count;
       let fields = {
-				_id: 1,
+        _id: 1,
         name: 1,
         // desc: 1,
         // icon: 1,
@@ -54,7 +54,7 @@ exports.getTagList = (req, res) => {
 exports.addTag = (req, res) => {
   let { name, desc } = req.body;
   Tag.findOne({
-    name,
+    name: name,
   })
     .then(result => {
       if (!result) {
@@ -65,6 +65,7 @@ exports.addTag = (req, res) => {
         tag
           .save()
           .then(data => {
+            // console.log('_id: '+data._id);
             responseClient(res, 200, 0, '添加成功', data);
           })
           .catch(err => {
