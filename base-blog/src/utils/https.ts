@@ -17,7 +17,6 @@ service = axios.create({
   timeout: 50000, // 请求超时时间
   withCredentials: true,
 });
-// service.defaults.withCredentials = true;
 // if (import.meta.env.MODE === "development") {
 //   service = axios.create({
 //     baseURL: "/api", // api 的 base_url

@@ -1,7 +1,7 @@
 
 <template>
   <div>
-    <i v-show="isShowBtn" @click="topFunction" class="el-icon-arrow-up"></i>
+    <i v-show="state.isShowBtn" @click="topFunction" class="el-icon-arrow-up"></i>
   </div>
 </template>
 <script lang="ts">

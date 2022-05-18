@@ -134,20 +134,20 @@ exports.getArticleList = (req, res) => {
   // }
 
   let conditions = {};
-  if (!state) {
+  if (!author) {
     if (keyword) {
       const reg = new RegExp(keyword, 'i'); //不区分大小写
       conditions = {
         $or: [{ title: { $regex: reg } }, { desc: { $regex: reg } }],
       };
     }
-  } else if (state) {
-    state = parseInt(state);
+  } else if (author) {
+    // state = parseInt(state);
     if (keyword) {
       const reg = new RegExp(keyword, 'i');
       conditions = {
         $and: [
-          { $or: [{ state: state }] },
+          { $or: [{ author: author }] },
           {
             $or: [
               { title: { $regex: reg } },
@@ -158,7 +158,7 @@ exports.getArticleList = (req, res) => {
         ],
       };
     } else {
-      conditions = { state };
+      conditions = { author: author };
     }
   }
 
@@ -547,7 +547,7 @@ exports.getArticleDetail = (req, res) => {
     })
       .populate([{ path: 'tags' },
       //  { path: 'category' }, 
-       { path: 'comments' }])
+      { path: 'comments' }])
       .exec((err, doc) => {
         // console.log("doc:");          // aikin
         // console.log("doc.tags:",doc.tags);          // aikin

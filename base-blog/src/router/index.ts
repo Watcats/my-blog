@@ -1,6 +1,12 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import HelloWorld from "../components/HelloWorld.vue";
+// import HelloWorld from "../components/HelloWorld.vue";
 import Home from "../views/Home.vue";
+import Articles from "../views/Articles.vue";
+import ArticleDetail from "../views/ArticleDetail.vue";
+import ArticleAdd from "../components/ArticleAdd.vue"
+import ArticleUpdate from "../components/ArticleUpdate.vue"
+import ArticleList from "../components/ArticleList.vue"
+
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -9,55 +15,39 @@ const routes: Array<RouteRecordRaw> = [
     component: Home,
   },
   {
-    path: "/helloWorld",
-    name: "HelloWorld",
-    component: HelloWorld,
-  },
-  {
     path: "/articles",
     name: "articles",
-    // route level code-splitting
-    // this generates a separate chunk (articles.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "articles" */ "../views/Articles.vue")
+    component: Articles,
+    children: [
+      {
+        path: "/articleDetail",
+        name: "articleDetail",
+        component: ArticleDetail,
+      },
+      {
+        path: "/ArticleAdd",
+        name: "ArticleAdd",
+        component: ArticleAdd,
+      },
+      {
+        path: "/ArticleUpdate",
+        name: "ArticleUpdate",
+        component: ArticleUpdate,
+      },
+      {
+        path: "/ArticleList",
+        name: "ArticleList",
+        component: ArticleList,
+      },
+    ]
   },
-  {
-    path: "/archive",
-    name: "archive",
-    component: () =>
-      import(/* webpackChunkName: "archive" */ "../views/Archive.vue")
-  },
-  {
-    path: "/timeline",
-    name: "timeline",
-    component: () =>
-      import(/* webpackChunkName: "timeline" */ "../views/Timeline.vue")
-  },
-  {
-    path: "/project",
-    name: "project",
-    component: () =>
-      import(/* webpackChunkName: "project" */ "../views/Project.vue")
-  },
-  {
-    path: "/message",
-    name: "message",
-    component: () =>
-      import(/* webpackChunkName: "message" */ "../views/Message.vue")
-  },
+
   {
     path: "/about",
     name: "about",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/ArticleDetail.vue")
+    component: ArticleDetail
   },
-  {
-    path: "/articleDetail",
-    name: "articleDetail",
-    component: () =>
-      import(/* webpackChunkName: "articleDetail" */ "../views/ArticleDetail.vue")
-  }
+
 ];
 
 const router = createRouter({

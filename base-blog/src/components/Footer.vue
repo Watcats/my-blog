@@ -1,9 +1,8 @@
-
 <template>
   <div class="footer">
-    <div>毕业设计上线测试</div>
+    <div>个人博客网站</div>
     <div class="number">
-      <a href="http://www.beian.miit.gov.cn" target="_blank">备案号后面再写</a>
+      <a href="https://beian.miit.gov.cn/" target="_blank">湘ICP备2021018619号</a>
     </div>
   </div>
 </template>

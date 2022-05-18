@@ -132,7 +132,7 @@ exports.currentUser = (req, res) => {
   if (user) {
     responseClient(res, 200, 0, '', user);
   } else {
-    responseClient(res, 200, 1, '', user);
+    responseClient(res, 200, 0, '', user);
   }
 };
 
@@ -200,40 +200,43 @@ exports.register = (req, res) => {
     return;
   }
   //验证用户是否已经在数据库中
-  User.findOne({ name: name })
+  User.findOne({ name: name })//用户名
     .then(data => {
       if (data) {
         responseClient(res, 200, 1, '用户名已存在！');
         return;
+      } else {
+        User.findOne({ email: email })//邮箱
+          .then(data => {
+            if (data) {
+              responseClient(res, 200, 1, '用户邮箱已存在！');
+              return;
+            } else {
+              //保存到数据库
+              let user = new User({
+                name: name,
+                password: md5(password + MD5_SUFFIX),
+                phone: phone,
+                email: email,
+                introduce: introduce,
+                type: type,
+              });
+              user.save().then(data => {
+                responseClient(res, 200, 0, '注册成功', data);
+              });
+            }
+          })
+          .catch(err => {
+            responseClient(res);
+            return;
+          });
       }
     })
     .catch(err => {
       responseClient(res);
       return;
     });
-  User.findOne({ email: email })
-    .then(data => {
-      if (data) {
-        responseClient(res, 200, 1, '用户邮箱已存在！');
-        return;
-      }
-      //保存到数据库
-      let user = new User({
-        name,
-        password: md5(password + MD5_SUFFIX),
-        phone,
-        email,
-        introduce,
-        type,
-      });
-      user.save().then(data => {
-        responseClient(res, 200, 0, '注册成功', data);
-      });
-    })
-    .catch(err => {
-      responseClient(res);
-      return;
-    });
+
 };
 
 exports.delUser = (req, res) => {

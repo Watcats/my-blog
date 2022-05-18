@@ -27,9 +27,22 @@ import {
     ElIcon,
     ElCollapseTransition
 } from 'element-plus';
+import VMdEditor from '@kangc/v-md-editor';
+import '@kangc/v-md-editor/lib/style/base-editor.css';
+import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
+import '@kangc/v-md-editor/lib/theme/style/github.css';
+
+// highlightjs
+import hljs from 'highlight.js';
+
+VMdEditor.use(githubTheme, {
+  Hljs: hljs,
+});
+
 
 const app = createApp(App)
 // app.mixin(mixin);
+
 
 app.component(ElButton.name, ElButton);
 app.component(ElDialog.name, ElDialog);
@@ -58,6 +71,9 @@ app.config.globalProperties.$loading = ElLoading.service;
 // app.config.globalProperties.productionTip = false;
 app.config.globalProperties.$https = service;
 app.config.globalProperties.$urls = urls;
+
+app.use(VMdEditor);
+
 
 app.use(store, key)
 app.use(router)

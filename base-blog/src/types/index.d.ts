@@ -32,7 +32,7 @@ export interface RegAndLogParams {
   name: string;
   password: string;
   phone: string;
-  desc: string;
+  introduce: string;
 }
 
 
@@ -130,6 +130,7 @@ export interface LikeParams {
 
 // 文章列表
 export interface ArticlesParams {
+  user: string;
   keyword: string;
   likes: string; // 是否是热门文章
   state: number; // 文章发布状态 => 0 草稿，1 已发布,'' 代表所有文章

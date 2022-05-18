@@ -84,7 +84,7 @@ import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { ElLoading, ElMessage } from "element-plus";
 import { key } from "../store";
-import { isMobileOrPc, getQueryStringByName } from "../utils/utils";
+import { getQueryStringByName } from "../utils/utils";
 import { UserInfo, NavListItem } from "../types/index";
 
 export default defineComponent({
@@ -122,12 +122,8 @@ export default defineComponent({
     },
   },
   mounted() {
-    // 授权登录的，有 code 参数
     this.routeChange(this.$route, this.$route);
-    const code: string = getQueryStringByName("code");
-    if (code) {
-      this.getUser(code);
-    }
+    this.getCurrentUser();
   },
   setup(props, context) {
     const store = useStore(key);
@@ -150,35 +146,18 @@ export default defineComponent({
         {
           index: "3",
           path: "/archive",
-          name: "归档",
+          name: "个人中心",
         },
         {
           index: "4",
-          path: "/project",
-          name: "项目",
-        },
-        {
-          index: "5",
-          path: "/timeline",
-          name: "历程",
-        },
-        {
-          index: "6",
-          path: "/message",
-          name: "留言",
-        },
-        {
-          index: "7",
           path: "/about",
           name: "关于",
         },
       ] as Array<NavListItem>,
       activeIndex: "0",
-      enterSlideUp: false,
-      leaveSlideDown: false,
-      isShow: false,
     });
 
+    //路由变化时更换高亮的菜单项
     const routeChange = (val: any, oldVal: any) => {
       for (let i = 0; i < state.list.length; i++) {
         const l: NavListItem = state.list[i];
@@ -189,15 +168,15 @@ export default defineComponent({
         }
       }
     };
-
+    //选择菜单项更换高亮菜单项
     const handleSelect = (val: string, oldVal: string): void => {
       state.activeIndex = val;
     };
 
+    //这两个函数用于父子组件传值
     const handleOk = (value: boolean): void => {
       state.visible = value;
     };
-
     const handleCancel = (value: boolean): void => {
       state.visible = value;
     };
@@ -216,38 +195,20 @@ export default defineComponent({
           avatar: "",
         },
       });
+      service.post(urls.logout, {});
+      router.push({path:'/'});
     };
 
-    const handleClickMenu = (route?: string): void => {
-      state.isShow = false;
-      if (route === "/login") {
-        state.handleFlag = "login";
-        state.visible = true;
-      }
-      if (route === "/register") {
-        state.handleFlag = "register";
-        state.visible = true;
-      }
-      if (route === "/logout") {
-        handleLogout();
-      }
-    };
-
-    const handleMenu = (): void => {
-      state.isShow = true;
-      state.enterSlideUp = true;
-    };
-
-    const getUser = async (code: string): Promise<void> => {
+    const getCurrentUser = async (): Promise<void> => {
       const loading: any = ElLoading.service({
         lock: true,
         text: "Loading",
         spinner: "el-icon-loading",
         background: "rgba(255, 255, 255, 0.7)",
       });
-      const data: UserInfo = await service.post(
-        urls.getUser,
-        { code },
+      const data: UserInfo = await service.get(
+        urls.currentUser,
+        {},
         { withCredentials: true }
       );
       loading.close();
@@ -261,26 +222,14 @@ export default defineComponent({
         userInfo,
       });
       window.sessionStorage.userInfo = JSON.stringify(userInfo);
-      ElMessage({
-        message: "操作成功",
-        type: "success",
-      });
-      let preventHistory = JSON.parse(window.sessionStorage.preventHistory);
-      if (preventHistory) {
-        router.push({
-          path: preventHistory.name,
-          query: preventHistory.query,
-        });
-      }
-    };
 
-    const handleHideMenu = (): void => {
-      state.enterSlideUp = false;
-      state.leaveSlideDown = true;
-      setTimeout(() => {
-        state.leaveSlideDown = false;
-        state.isShow = false;
-      }, 300);
+      // let preventHistory = JSON.parse(window.sessionStorage.preventHistory);
+      // if (preventHistory) {
+      //   router.push({
+      //     path: preventHistory.name,
+      //     query: preventHistory.query,
+      //   });
+      // }
     };
 
     return {
@@ -289,12 +238,9 @@ export default defineComponent({
       handleOk,
       handleClick,
       handleLogout,
-      handleClickMenu,
-      handleMenu,
-      getUser,
+      getCurrentUser,
       handleSelect,
       routeChange,
-      handleHideMenu,
     };
   },
 });

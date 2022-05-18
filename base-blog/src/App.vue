@@ -19,9 +19,6 @@ export default defineComponent({
   name: "App",
   components: {
     Nav: defineAsyncComponent(() => import("./components/Nav.vue")),
-    CustomSlider: defineAsyncComponent(
-      () => import("./components/CustomSlider.vue")
-    ),
     Footer: defineAsyncComponent(() => import("./components/Footer.vue")),
     ArrowUp: defineAsyncComponent(() => import("./components/ArrowUp.vue")),
   },

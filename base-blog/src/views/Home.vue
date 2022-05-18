@@ -1,9 +1,15 @@
 <template>
   <div class="left clearfix">
-    <h3 v-if="state.params.tag_id" class="left-title">{{ state.tag_name }} 相关的文章：</h3>
+    <h3 v-if="state.params.tag_id" class="left-title">
+      {{ state.tag_name }} 相关的文章：
+    </h3>
     <ul class="articles-list" id="list">
       <transition-group name="el-fade-in">
-        <li v-for="(article) in state.articlesList" :key="article._id" class="item">
+        <li
+          v-for="article in state.articlesList"
+          :key="article._id"
+          class="item"
+        >
           <a :href="state.href + article._id" target="_blank">
             <!-- <img class="wrap-img img-blur-done" :data-src="article.img_url" data-has-lazy-src="false"
               src="../assets/bg.jpg" alt="文章封面" /> -->
@@ -100,7 +106,7 @@ export default defineComponent({
         pageNum: 1,
         pageSize: 10,
       } as ArticlesParams,
-      href: "http://localhost:3001/articleDetail?article_id="
+      href: "http://localhost:3001/articleDetail?article_id=",
     });
 
     const formatTime = (value: string | Date): string => {
@@ -109,12 +115,9 @@ export default defineComponent({
 
     const handleSearch = async (): Promise<void> => {
       state.isLoading = true;
-      const data: ArticlesData = await service.get(
-        urls.getArticleList,
-        {
-          params: state.params,
-        }
-      );
+      const data: ArticlesData = await service.get(urls.getArticleList, {
+        params: state.params,
+      });
       // console.log(data);
       state.isLoading = false;
       state.articlesList = [...state.articlesList, ...data.list];
@@ -126,7 +129,7 @@ export default defineComponent({
       });
       if (data.list.length === 0 || state.total === state.articlesList.length) {
         state.isLoadEnd = true;
-        document.removeEventListener("scroll", () => { });
+        document.removeEventListener("scroll", () => {});
         window.onscroll = null;
       }
     };
@@ -138,7 +141,7 @@ export default defineComponent({
       state.articlesList = [];
       state.params.pageNum = 1;
       handleSearch();
-    }
+    };
 
     onMounted(() => {
       // handleSearch();
@@ -157,9 +160,9 @@ export default defineComponent({
       state,
       formatTime,
       handleSearch,
-      routeChange
+      routeChange,
     };
-  }
+  },
 });
 </script>
 
@@ -179,7 +182,7 @@ export default defineComponent({
       line-height: 1.5;
     }
 
-    .item>div {
+    .item > div {
       padding-right: 140px;
     }
 

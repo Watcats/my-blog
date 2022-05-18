@@ -1,14 +1,25 @@
 <template>
-  <el-dialog title="评论" width="60%" v-model="state.dialogDodel" @close="cancel">
+  <el-dialog
+    title="评论"
+    width="60%"
+    v-model="state.dialogDodel"
+    @close="cancel"
+  >
     <el-form>
       <el-form-item>
-        <el-input type="textarea" v-model="state.content" placeholder="文明社会，理性评论" autocomplete="off"></el-input>
+        <el-input
+          class="comment-input"
+          type="textarea"
+          v-model="state.content"
+          placeholder="文明社会，理性评论"
+          autocomplete="off"
+        ></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
+    <template v-slot:footer class="dialog-footer">
       <el-button type="default" @click="cancel">取消</el-button>
       <el-button type="primary" @click="handleOk">确 定</el-button>
-    </div>
+    </template>
   </el-dialog>
 </template>
 
@@ -134,5 +145,10 @@ export default defineComponent({
 <style scoped>
 .dialog-footer {
   text-align: right;
+}
+</style>
+<style>
+.comment-input {
+  border: 1px solid black;
 }
 </style>
