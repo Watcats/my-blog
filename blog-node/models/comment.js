@@ -25,7 +25,7 @@ const commentSchema = new mongoose.Schema({
   // 用户 id
   user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 
-  // 父评论的用户信息
+  // 评论的用户信息
   user: {
     // 用户id
     user_id: { type: mongoose.Schema.Types.ObjectId },

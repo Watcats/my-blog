@@ -132,7 +132,7 @@ exports.currentUser = (req, res) => {
   if (user) {
     responseClient(res, 200, 0, '', user);
   } else {
-    responseClient(res, 200, 0, '', user);
+    responseClient(res, 200, 0, '', null);
   }
 };
 

@@ -1,11 +1,7 @@
 <template>
   <div style="width: 100%">
     <div class="article clearfix">
-      <div
-        v-show="!state.isLoading"
-        style="{ 'width': '75%' }"
-        class="article-left fl"
-      >
+      <div v-show="!state.isLoading" style="width: 75%" class="article-left fl">
         <div class="header">
           <h1 class="title">{{ state.articleDetail.title }}</h1>
           <div class="author">
@@ -39,6 +35,13 @@
                 </span>
                 <span class="likes-count">
                   喜欢 {{ state.articleDetail.meta.likes }}
+                </span>
+                <span class="update-time">
+                  最后修改：{{
+                    state.articleDetail.update_time
+                      ? formatTime(state.articleDetail.update_time)
+                      : ""
+                  }}
                 </span>
               </div>
             </div>
@@ -85,7 +88,7 @@
             type="primary"
             :loading="state.btnLoading"
             @click="handleAddComment"
-            >发 送
+            >发表评论
           </el-button>
         </div>
         <CommentList
@@ -143,7 +146,7 @@ export default defineComponent({
         toc: "",
         _id: "",
         author: "user",
-        category: [],
+        // category: [],
         comments: [],
         create_time: "",
         desc: "",
@@ -273,6 +276,8 @@ export default defineComponent({
       }
       let user_id = "";
       if (window.sessionStorage.userInfo) {
+        console.log("user");
+        
         let userInfo = JSON.parse(window.sessionStorage.userInfo);
         user_id = userInfo._id;
       } else {
@@ -410,6 +415,10 @@ export default defineComponent({
 
         span {
           padding-right: 5px;
+        }
+
+        .update-time{
+          margin-left: 10px;
         }
       }
 

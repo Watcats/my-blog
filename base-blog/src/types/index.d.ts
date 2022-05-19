@@ -102,7 +102,7 @@ export interface ArticleDetailIF {
   toc: string;
   _id: string;
   author: string;
-  category: Array<any>;
+  // category: Array<any>;
   comments: Array<Comments>;
   create_time: string;
   desc: string;

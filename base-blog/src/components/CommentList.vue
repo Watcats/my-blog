@@ -1,4 +1,3 @@
-
 <template>
   <div class="comment-list">
     <div class="top-title">
@@ -8,8 +7,7 @@
       <div class="item-header">
         <div class="author">
           <div class="avatar">
-            <img v-if="item.user.avatar.length < 10" src="../assets/user.png" alt="默认图片" />
-            <img v-else :src="item.user.avatar" alt="" />
+            <img src="../assets/user.png" alt="默认图片" />
           </div>
         </div>
         <div class="info">
@@ -32,9 +30,11 @@
         <div class="item-header">
           <div class="author">
             <div class="avatar">
-              <img v-if="e.user.avatar.length < 10" src="../assets/user.png" alt="默认图片" />
-              <img v-else :src="e.user.avatar" alt="" />
-            </div>
+              <img
+                src="../assets/user.png"
+                alt="默认图片"
+              />
+              </div>
           </div>
           <div class="info">
             <div class="name">
@@ -52,13 +52,23 @@
         </div>
         <div class="item-comment">
           <div class="message">
-            <el-button @click="showCommentModal(item._id, item.user, e.user)" size="small">回复</el-button>
+            <el-button
+              @click="showCommentModal(item._id, item.user, e.user)"
+              size="small"
+              >回复</el-button
+            >
           </div>
         </div>
       </div>
     </div>
-    <Comment :visible="state.visible" :to_user="state.to_user" :comment_id="state.comment_id" :article_id="article_id"
-      @ok="handleOk" @cancel="handleCancel" />
+    <Comment
+      :visible="state.visible"
+      :to_user="state.to_user"
+      :comment_id="state.comment_id"
+      :article_id="article_id"
+      @ok="handleOk"
+      @cancel="handleCancel"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -93,7 +103,7 @@ export default defineComponent({
       to_user: {
         user_id: "",
         name: "",
-        avatar: "",
+        // avatar: "",
         type: 0,
       },
     });
@@ -117,9 +127,9 @@ export default defineComponent({
       user: ToUser,
       secondUser?: ToUser
     ): boolean | void => {
-      if (!window.sessionStorage.userInfo._id) {
+      if (!window.sessionStorage.userInfo) {
         ElMessage({
-          message: "登录才能点赞，请先登录！",
+          message: "登录才能评论，请先登录！",
           type: "warning",
         });
         return false;
@@ -128,7 +138,7 @@ export default defineComponent({
       if (secondUser) {
         state.visible = true;
         state.comment_id = commitId;
-        state.to_user = user;
+        state.to_user = secondUser;
       } else {
         // 添加二级评论
         state.visible = true;

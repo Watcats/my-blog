@@ -491,7 +491,7 @@ exports.getArticleDetailByType = (req, res) => {
 exports.getArticleDetail = (req, res) => {
   let { id } = req.body;
   // console.log(req.body);
-  let type = Number(req.body.type) || 1; //文章类型 => 1: 普通文章，2: 简历，3: 管理员介绍
+  let type = Number(req.body.type) || 1; //文章类型 => 1: 普通文章，2: 其他
   let filter = Number(req.body.filter) || 1; //文章的评论过滤 => 1: 过滤，2: 不过滤
   // console.log('type:', type);
   if (type === 1) {
@@ -528,7 +528,6 @@ exports.getArticleDetail = (req, res) => {
             //     }
             //   }
             // }
-
           })
           .catch(err => {
             console.error('err :', err);
@@ -559,26 +558,25 @@ exports.getArticleDetail = (req, res) => {
           data.meta.views = data.meta.views + 1;
           Article.updateOne({ type: type }, { meta: data.meta })
             .then(result => {
-              if (filter === 1) {
-                const arr = data.comments;
-                for (let i = arr.length - 1; i >= 0; i--) {
-                  const e = arr[i];
-                  if (e.state !== 1) {
-                    arr.splice(i, 1);
-                  }
-                  const newArr = e.other_comments;
-                  const length = newArr.length;
-                  if (length) {
-                    for (let j = length - 1; j >= 0; j--) {
-                      const item = newArr[j];
-                      if (item.state !== 1) {
-                        newArr.splice(j, 1);
-                      }
-                    }
-                  }
-                }
-              }
-              responseClient(res, 200, 0, '操作成功 ！', data);
+              // if (filter === 1) {
+              //   const arr = data.comments;
+              //   for (let i = arr.length - 1; i >= 0; i--) {
+              //     const e = arr[i];
+              //     if (e.state !== 1) {
+              //       arr.splice(i, 1);
+              //     }
+              //     const newArr = e.other_comments;
+              //     const length = newArr.length;
+              //     if (length) {
+              //       for (let j = length - 1; j >= 0; j--) {
+              //         const item = newArr[j];
+              //         if (item.state !== 1) {
+              //           newArr.splice(j, 1);
+              //         }
+              //       }
+              //     }
+              //   }
+              // }
             })
             .catch(err => {
               console.error('err :', err);
@@ -593,10 +591,14 @@ exports.getArticleDetail = (req, res) => {
       .populate([{ path: 'tags' },
       //  { path: 'category' }, 
       { path: 'comments' }])
-      .exec((err, doc) => {
-        // console.log("doc:");          // aikin
-        // console.log("doc.tags:",doc.tags);          // aikin
-        // console.log("doc.category:",doc.category);           // undefined
-      });
+      // .exec((err, doc) => {
+      //   // console.log("doc:");          // aikin
+      //   // console.log("doc.tags:",doc.tags);          // aikin
+      //   // console.log("doc.category:",doc.category);           // undefined
+      // });
+      .then(result => {
+        responseClient(res, 200, 0, '操作成功 ！', result);
+
+      })
   }
 };

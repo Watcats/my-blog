@@ -202,7 +202,7 @@ export default defineComponent({
     };
 
     const handleLogout = (): void => {
-      window.sessionStorage.userInfo = "";
+      window.sessionStorage.userInfo = null;
       store.commit("SAVE_USER", {
         userInfo: {
           _id: "",
@@ -225,16 +225,17 @@ export default defineComponent({
         withCredentials: true,
       });
       loading.close();
-
-      const userInfo: UserInfo = {
-        _id: data._id,
-        name: data.name,
-        avatar: data.avatar,
-      };
-      store.commit("SAVE_USER", {
-        userInfo,
-      });
-      window.sessionStorage.userInfo = JSON.stringify(userInfo);
+      if (data) {
+        const userInfo: UserInfo = {
+          _id: data._id,
+          name: data.name,
+          avatar: data.avatar,
+        };
+        store.commit("SAVE_USER", {
+          userInfo,
+        });
+        window.sessionStorage.userInfo = JSON.stringify(userInfo);
+      }
 
       // let preventHistory = JSON.parse(window.sessionStorage.preventHistory);
       // if (preventHistory) {
