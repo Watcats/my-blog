@@ -100,7 +100,7 @@ export default defineComponent({
       }
 
       let user_id = "";
-      if (window.sessionStorage.userInfo) {
+      if (window.sessionStorage.userInfo._id) {
         let userInfo = JSON.parse(window.sessionStorage.userInfo);
         user_id = userInfo._id;
       } else {

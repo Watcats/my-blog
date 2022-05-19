@@ -145,16 +145,29 @@ export default defineComponent({
         },
         {
           index: "3",
-          path: "/archive",
+          path: "/User",
           name: "个人中心",
         },
         {
           index: "4",
-          path: "/about",
+          path: "/ArticleDetail?type=2",
           name: "关于",
         },
       ] as Array<NavListItem>,
-      activeIndex: "0",
+      activeIndex: "1",
+    });
+    router.beforeEach((to, from, next) => {
+      if (to.path === "/articles" || to.path === "/User") {
+        if (!window.sessionStorage.userInfo._id) {
+          ElMessage({
+            message: "请先登陆!",
+            type: "warning",
+          });
+          router.push({ path: "/" });
+        }
+        next();
+      }
+      next();
     });
 
     //路由变化时更换高亮的菜单项
@@ -196,7 +209,7 @@ export default defineComponent({
         },
       });
       service.post(urls.logout, {});
-      router.push({path:'/'});
+      router.push({ path: "/" });
     };
 
     const getCurrentUser = async (): Promise<void> => {
@@ -206,10 +219,9 @@ export default defineComponent({
         spinner: "el-icon-loading",
         background: "rgba(255, 255, 255, 0.7)",
       });
-      const data = await service.get(
-        urls.currentUser,
-        { withCredentials: true }
-      );
+      const data = await service.get(urls.currentUser, {
+        withCredentials: true,
+      });
       loading.close();
 
       const userInfo: UserInfo = {

@@ -118,13 +118,13 @@ exports.login = (req, res) => {
 };
 
 //用户验证,换成currentUser
-// exports.userInfo = (req, res) => {
-//   if (req.session.userInfo) {
-//     responseClient(res, 200, 0, '', req.session.userInfo);
-//   } else {
-//     responseClient(res, 200, 1, '请重新登录', req.session.userInfo);
-//   }
-// };
+exports.userInfo = (req, res) => {
+  let { name } = req.body;
+  User.findOne({ name: name })
+    .then(data => {
+      responseClient(res, 200, 0, '获取用户信息', data);
+    })
+};
 
 //后台当前用户
 exports.currentUser = (req, res) => {
@@ -237,6 +237,83 @@ exports.register = (req, res) => {
       return;
     });
 
+};
+
+exports.updatePwd = (req, res) => {
+  let { name, pwd, new_pwd } = req.body;
+  //更新
+  if (!pwd) {
+    responseClient(res, 200, 2, '密码不可为空');
+    return;
+  }
+  if (!new_pwd) {
+    responseClient(res, 200, 2, '密码不可为空');
+    return;
+  }
+  User.findOne(
+    {
+      name: name,
+      password: md5(password + MD5_SUFFIX),
+    })//用户名
+    .then(userInfo => {
+      if (userInfo) {
+        User.updateOne(
+          { name: name },
+          {
+            password: md5(new_pwd + MD5_SUFFIX)
+          }
+        )
+          .then(result => {
+            responseClient(res, 200, 0, '密码修改成功', result);
+          })
+          .catch(err => {
+            console.error(err);
+            responseClient(res);
+          });
+      } else {
+        responseClient(res, 200, 1, '用户名或者密码错误');
+      }
+    })
+    .catch(err => {
+      responseClient(res);
+    });
+};
+
+exports.updateUser = (req, res) => {
+  let { name, phone, email, introduce, type } = req.body;
+  if (!email) {
+    responseClient(res, 400, 2, '用户邮箱不可为空');
+    return;
+  }
+  const reg = new RegExp(
+    '^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$',
+  ); //正则表达式
+  if (!reg.test(email)) {
+    responseClient(res, 400, 2, '请输入格式正确的邮箱！');
+    return;
+  }
+  if (!name) {
+    responseClient(res, 400, 2, '用户名不可为空');
+    return;
+  }
+  if (!password) {
+    responseClient(res, 400, 2, '密码不可为空');
+    return;
+  }
+  //更新
+  User.updateOne({ name: name }, {
+    phone: phone,
+    email: email,
+    introduce: introduce
+  }
+  )//用户名
+    .then(result => {
+      responseClient(res, 200, 0, '操作成功', result);
+    })
+    .catch(err => {
+      console.error(err);
+      responseClient(res);
+    });
 };
 
 exports.delUser = (req, res) => {

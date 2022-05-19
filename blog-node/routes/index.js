@@ -20,6 +20,9 @@ module.exports = app => {
   // app.post('/getUser', user.getUser);
   app.get('/currentUser', user.currentUser);
   // app.get('/getUserList', user.getUserList);
+  app.post('/updateUser', user.updateUser);
+  app.post('/updatePwd', user.updatePwd);
+  app.post('/userInfo', user.userInfo);
 
   app.post('/addArticle', article.addArticle);
   app.post('/updateArticle', article.updateArticle);

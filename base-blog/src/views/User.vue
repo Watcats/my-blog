@@ -15,40 +15,15 @@
         </el-main>
       </el-container>
     </el-container>
-    <LoadingCustom v-if="state.isLoading"></LoadingCustom>
-    <LoadEnd v-if="state.isLoadEnd"></LoadEnd>
   </div>
 </template>
-
 <script lang="ts">
-import { defineComponent, reactive, onMounted, nextTick } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import LoadEnd from "../components/LoadEnd.vue";
-import LoadingCustom from "../components/Loading.vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "Articles",
-  components: {
-    LoadEnd,
-    LoadingCustom,
-  },
-  setup(props, context) {
-    const router = useRouter();
-    const state = reactive({
-      user_id: "",
-      user_name: "",
-      isLoadEnd: false,
-      isLoading: false,
-    });
-
-    return {
-      state,
-    };
-  },
+  name: "User",
 });
 </script>
-
-
 <style lang="less" scoped>
 .content {
   margin: 0;
@@ -66,3 +41,4 @@ export default defineComponent({
   color: white !important;
 }
 </style>
+

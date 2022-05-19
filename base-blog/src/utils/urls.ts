@@ -5,10 +5,13 @@ export const urls: any = {
   register: "register",
   // getUser: "getUser",
   currentUser: "currentUser",
+  updateUser: "updateUser",
+  userInfo: "userInfo",
+  updatePwd: "updatePwd",
 
-  addArticle:"addArticle",
-  updateArticle:"updateArticle",
-  delArticle:"delArticle",
+  addArticle: "addArticle",
+  updateArticle: "updateArticle",
+  delArticle: "delArticle",
   getArticleList: "getArticleList",
   getArticleDetail: "getArticleDetail",
   likeArticle: "likeArticle",
@@ -17,8 +20,8 @@ export const urls: any = {
   addThirdComment: "addThirdComment",
   getCommentList: "getCommentList",
 
-  addTag:"addTag",
-  delTag:"delTag",
+  addTag: "addTag",
+  delTag: "delTag",
   getTagList: "getTagList",
   //暂时不用
   addMessage: "addMessage",

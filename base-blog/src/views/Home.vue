@@ -1,8 +1,19 @@
 <template>
   <div class="left clearfix">
-    <h3 v-if="state.params.tag_id" class="left-title">
-      {{ state.tag_name }} 相关的文章：
-    </h3>
+    <el-form>
+      <el-formItem label="搜索" label-width="60px">
+        <el-input
+          v-model="state.params.keyword"
+          placeholder=""
+          class="border"
+          autocomplete="off"
+        >
+        </el-input>
+        <el-button type="primary" @click="submit" style="margin-top: 10px"
+          >获取文章</el-button
+        >
+      </el-formItem>
+    </el-form>
     <ul class="articles-list" id="list">
       <transition-group name="el-fade-in">
         <li
@@ -157,6 +168,12 @@ export default defineComponent({
       // handleSearch();
     };
 
+    const submit = () => {
+      state.articlesList = [];
+      state.params.pageNum = 1;
+      handleSearch();
+    };
+
     onMounted(() => {
       let userInfo: UserInfo = {
         _id: "",
@@ -185,6 +202,7 @@ export default defineComponent({
 
     return {
       state,
+      submit,
       formatTime,
       handleSearch,
       routeChange,
