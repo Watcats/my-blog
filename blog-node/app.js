@@ -31,14 +31,14 @@ app.use(
 );
 
 //拦截请求查看sessionid和确定当前用户,保持登陆状态
-app.use(function (req, res, next) {
-  console.log('session_id:' + req.session.id);
-  console.log('session_content:' + req.session.userInfo);
-  if (req.session.userInfo) {
-    console.log('user:' + req.session.userInfo.name);
-  }
-  next();
-});
+// app.use(function (req, res, next) {
+//   console.log('session_id:' + req.session.id);
+//   console.log('session_content:' + req.session.userInfo);
+//   if (req.session.userInfo) {
+//     console.log('user:' + req.session.userInfo.name);
+//   }
+//   next();
+// });
 
 const mongodb = require('./core/mongodb');
 

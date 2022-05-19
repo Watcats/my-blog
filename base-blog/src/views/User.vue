@@ -3,10 +3,10 @@
     <el-container>
       <el-menu  class="el-menu-demo" mode="horizontal">
         <el-menu-item index="1">
-          <router-link to="/ArticleList">文章列表</router-link>
+          <router-link to="/UserInfo">个人信息</router-link>
         </el-menu-item>
         <el-menu-item index="2">
-          <router-link to="/ArticleAdd">新建文章</router-link>
+          <router-link to="/UserPwd">修改密码</router-link>
         </el-menu-item>
       </el-menu>
       <el-container>

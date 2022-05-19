@@ -253,7 +253,7 @@ exports.updatePwd = (req, res) => {
   User.findOne(
     {
       name: name,
-      password: md5(password + MD5_SUFFIX),
+      password: md5(pwd + MD5_SUFFIX),
     })//用户名
     .then(userInfo => {
       if (userInfo) {
@@ -280,7 +280,7 @@ exports.updatePwd = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
-  let { name, phone, email, introduce, type } = req.body;
+  let { name, phone, email, introduce } = req.body;
   if (!email) {
     responseClient(res, 400, 2, '用户邮箱不可为空');
     return;
@@ -294,10 +294,6 @@ exports.updateUser = (req, res) => {
   }
   if (!name) {
     responseClient(res, 400, 2, '用户名不可为空');
-    return;
-  }
-  if (!password) {
-    responseClient(res, 400, 2, '密码不可为空');
     return;
   }
   //更新

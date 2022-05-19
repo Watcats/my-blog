@@ -7,6 +7,9 @@ import ArticleAdd from "../components/ArticleAdd.vue"
 import ArticleUpdate from "../components/ArticleUpdate.vue"
 import ArticleList from "../components/ArticleList.vue"
 import User from "../views/User.vue";
+import About from "../components/About.vue";
+import UserInfo from "../components/UserInfo.vue";
+import UserPwd from "../components/UserPwd.vue";
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -20,11 +23,6 @@ const routes: Array<RouteRecordRaw> = [
     name: "articles",
     component: Articles,
     children: [
-      {
-        path: "/articleDetail",
-        name: "articleDetail",
-        component: ArticleDetail,
-      },
       {
         path: "/ArticleAdd",
         name: "ArticleAdd",
@@ -43,14 +41,31 @@ const routes: Array<RouteRecordRaw> = [
     ]
   },
   {
+    path: "/articleDetail",
+    name: "articleDetail",
+    component: ArticleDetail,
+  },
+  {
     path: "/User",
     name: "User",
     component: User,
+    children: [
+      {
+        path: "/UserInfo",
+        name: "UserInfo",
+        component: UserInfo,
+      },
+      {
+        path: "/UserPwd",
+        name: "UserPwd",
+        component: UserPwd,
+      },
+    ]
   },
   {
-    path: "/ArticleDetail?type=2",
+    path: "/About",
     name: "about",
-    component: ArticleDetail
+    component: About,
   },
 
 ];

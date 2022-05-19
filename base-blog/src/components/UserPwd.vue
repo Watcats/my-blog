@@ -3,6 +3,7 @@
     <el-form>
       <el-formItem label="旧密码" label-width="60px">
         <el-input
+          type="password"
           v-model="state.params.pwd"
           placeholder=""
           class="border"
@@ -12,6 +13,7 @@
       </el-formItem>
       <el-formItem label="新密码" label-width="60px">
         <el-input
+          type="password"
           v-model="state.params.new_pwd"
           placeholder=""
           class="border"
@@ -54,10 +56,13 @@ export default defineComponent({
 
     const submit = async (): Promise<void> => {
       const data = await service.post(urls.updatePwd, state.params);
-      ElMessage({
+      if(data){
+        ElMessage({
         message: "成功修改密码",
         type: "success",
       });
+      }
+      
     };
 
     onMounted(() => {

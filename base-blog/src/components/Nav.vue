@@ -150,7 +150,7 @@ export default defineComponent({
         },
         {
           index: "4",
-          path: "/ArticleDetail?type=2",
+          path: "/About",
           name: "关于",
         },
       ] as Array<NavListItem>,
@@ -158,16 +158,18 @@ export default defineComponent({
     });
     router.beforeEach((to, from, next) => {
       if (to.path === "/articles" || to.path === "/User") {
-        if (!window.sessionStorage.userInfo._id) {
+        if (!window.sessionStorage.userInfo) {
           ElMessage({
             message: "请先登陆!",
             type: "warning",
           });
           router.push({ path: "/" });
+        } else {
+          next();
         }
+      } else {
         next();
       }
-      next();
     });
 
     //路由变化时更换高亮的菜单项

@@ -1,37 +1,31 @@
 <template>
-  <div class="hello">
-    <mavon-editor v-model="value"/>
-  </div>
+  <h1>{{ msg }}</h1>
+  <button @click="inCrement"> count is: </button>
+  <p>{{ count }}</p>
 </template>
 
 <script>
-export default {
-  name: 'HelloWorld',
-  props: {
-    
-  },
-  data () {
-    return {
-        value: 'test'
-    }
-  },
-}
-</script>
+  import { defineComponent, computed } from 'vue'
+  import { useStore } from 'vuex'
+  import { key } from '../store'
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
+  export default defineComponent({
+    name: 'HelloWorld',
+    props: {
+      msg: {
+        type: String,
+        default: ''
+      }
+    },
+    setup() {
+      const store = useStore(key)
+
+      const count = computed(() => store.state.count)
+
+      return {
+        count,
+        inCrement: () => store.commit('increment')
+      }
+    }
+  })
+</script>

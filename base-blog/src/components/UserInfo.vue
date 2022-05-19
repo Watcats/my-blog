@@ -56,14 +56,13 @@ export default defineComponent({
       params: {
         email: "",
         name: "",
-        password: "",
         phone: "",
         introduce: "",
-      } as RegAndLogParams,
+      },
     });
 
     const submit = async (): Promise<void> => {
-      const data = await service.post(urls.updateArticle, state.params);
+      const data = await service.post(urls.updateUser, state.params);
       ElMessage({
         message: "成功修改用户信息",
         type: "success",

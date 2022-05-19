@@ -4,12 +4,7 @@
 const user = require('./user');
 const article = require('./article');
 const comment = require('./comment');
-const message = require('./message');
 const tag = require('./tag');
-const link = require('./link');
-const category = require('./category');
-const timeAxis = require('./timeAxis');
-const project = require('./project');
 
 module.exports = app => {
   app.post('/login', user.login);
@@ -41,32 +36,4 @@ module.exports = app => {
   app.post('/addTag', tag.addTag);
   app.post('/delTag', tag.delTag);
   app.get('/getTagList', tag.getTagList);
-
-  //下面的暂时没用
-  app.post('/addMessage', message.addMessage);
-  app.post('/addReplyMessage', message.addReplyMessage);
-  app.post('/delMessage', message.delMessage);
-  app.post('/getMessageDetail', message.getMessageDetail);
-  app.get('/getMessageList', message.getMessageList);
-
-  app.post('/addLink', link.addLink);
-  app.post('/updateLink', link.updateLink);
-  app.post('/delLink', link.delLink);
-  app.get('/getLinkList', link.getLinkList);
-
-  app.post('/addCategory', category.addCategory);
-  app.post('/delCategory', category.delCategory);
-  app.get('/getCategoryList', category.getCategoryList);
-
-  app.post('/addTimeAxis', timeAxis.addTimeAxis);
-  app.post('/updateTimeAxis', timeAxis.updateTimeAxis);
-  app.post('/delTimeAxis', timeAxis.delTimeAxis);
-  app.get('/getTimeAxisList', timeAxis.getTimeAxisList);
-  app.post('/getTimeAxisDetail', timeAxis.getTimeAxisDetail);
-
-  app.post('/addProject', project.addProject);
-  app.post('/updateProject', project.updateProject);
-  app.post('/delProject', project.delProject);
-  app.get('/getProjectList', project.getProjectList);
-  app.post('/getProjectDetail', project.getProjectDetail);
 };

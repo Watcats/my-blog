@@ -85,7 +85,7 @@ import {
   watch,
 } from "vue";
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { key } from "../store";
 import { RegAndLogParams, UserInfo } from "../types/index";
@@ -107,6 +107,7 @@ export default defineComponent({
   emits: ["ok", "cancel"],
   setup(props, context) {
     const store = useStore(key);
+    const router = useRouter();
     const state = reactive({
       dialogDodel: props.visible,
       btnLoading: false,
@@ -119,8 +120,6 @@ export default defineComponent({
         introduce: "",
       } as RegAndLogParams,
     });
-
-    const route = useRoute();
 
     const submit = async (): Promise<void> => {
       let data: any = "";
@@ -148,6 +147,7 @@ export default defineComponent({
         message: "登录成功",
         type: "success",
       });
+      router.push({ path: "/" });
     };
 
     const handleOk = (): void => {
