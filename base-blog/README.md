@@ -1,31 +1,30 @@
-## 功能
+## 已经完成功能
 
-### 已经完成功能
+-  登录  
+-  注册  
+-  文章列表
+-  标签  
+-  关于  
+-  点赞与评论
+-  文章详情（支持代码语法高亮）
+-  文章详情目录
 
-- [x] 登录  
-- [x] 注册  
-- [x] 文章列表
-- [x] 文章归档
-- [x] 标签  
-- [x] 关于  
-- [x] 点赞与评论
-- [x] 留言
-- [x] 历程
-- [x] 文章详情（支持代码语法高亮）
-- [x] 文章详情目录
-- [x] 移动端适配
-- [x] github 授权登录
+## 前端用到的框架与工具 
+- vue
+- typescript
+- element-plus
+- vue-router
+- vite
+- vuex
+- axios
+- highlight.js
+- marked
 
-## 前端主要技术 
-- vue： ^3.0.5
-- typescript : ^4.1.3
-- element-plus: ^1.0.2-beta.41
-- vue-router : ^4.0.6
-- vite: ^2.2.3
-- vuex: ^4.0.0
-- axios: ^0.21.1
-- highlight.js: ^10.7.2
-- marked：^2.0.3
+## 获取项目代码
+
+```
+git clone git@github.com:Watcats/my-blog.git
+```
 
 ## Build Setup 
 

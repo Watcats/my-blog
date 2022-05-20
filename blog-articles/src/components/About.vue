@@ -1,21 +1,29 @@
 <template>
-  <img
-    alt="Vue logo"
-    src="../assets/logo.png"
-  />
-  <h1>{{ msg }}</h1>
+  <router-view></router-view>
 </template>
-
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive, onMounted, nextTick } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
-  name: 'About',
-  data() {
+  name: "About",
+  setup(props, context) {
+    const router = useRouter();
+    const state = reactive({
+      href: "/articleDetail",
+      article_id: "62866dec8c94a83eccc0a8b1",
+    });
+
+    onMounted(() => {
+      router.push(state.href + "?article_id=" + state.article_id);
+    });
+
     return {
-      msg: 'Hello Vue 3.0 + Vite!'
-    }
+      state,
+    };
   },
-  setup() {}
-})
+});
 </script>
+<style scoped>
+</style>
+

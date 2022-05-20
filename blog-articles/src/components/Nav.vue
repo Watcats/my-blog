@@ -83,7 +83,7 @@ import urls from "../utils/urls";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { ElLoading, ElMessage } from "element-plus";
-import { key } from "../store";
+// import { key } from "../store";
 import { getQueryStringByName } from "../utils/utils";
 import { UserInfo, NavListItem } from "../types/index";
 
@@ -126,7 +126,7 @@ export default defineComponent({
     this.getCurrentUser();
   },
   setup(props, context) {
-    const store = useStore(key);
+    // const store = useStore(key);
     const router = useRouter();
     const state = reactive({
       visible: false,
@@ -207,13 +207,13 @@ export default defineComponent({
 
     const handleLogout = (): void => {
       window.sessionStorage.userInfo = "";
-      store.commit("SAVE_USER", {
-        userInfo: {
-          _id: "",
-          name: "",
-          avatar: "",
-        },
-      });
+      // store.commit("SAVE_USER", {
+      //   userInfo: {
+      //     _id: "",
+      //     name: "",
+      //     avatar: "",
+      //   },
+      // });
       service.post(urls.logout, {});
       router.push({path:'/'});
     };
@@ -236,9 +236,9 @@ export default defineComponent({
       };
       window.sessionStorage.userInfo = JSON.stringify(userInfo);
 
-      store.commit("SAVE_USER", {
-        userInfo,
-      });
+      // store.commit("SAVE_USER", {
+      //   userInfo,
+      // });
       // let preventHistory = JSON.parse(window.sessionStorage.preventHistory);
       // if (preventHistory) {
       //   router.push({

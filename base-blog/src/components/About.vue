@@ -11,11 +11,11 @@ export default defineComponent({
     const router = useRouter();
     const state = reactive({
       href: "/articleDetail",
-      type: 2,
+      article_id: "62866dec8c94a83eccc0a8b1",
     });
 
     onMounted(() => {
-      router.push(state.href + "?type=" + state.type);
+      router.push(state.href + "?article_id=" + state.article_id);
     });
 
     return {

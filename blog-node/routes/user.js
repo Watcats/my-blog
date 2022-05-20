@@ -90,7 +90,6 @@ import { MD5_SUFFIX, responseClient, md5 } from '../util/util.js';
 
 exports.login = (req, res) => {
   let { email, password } = req.body;
-  // console.log(req.body);
   if (!email) {
     responseClient(res, 200, 2, '用户邮箱不可为空');
     return;

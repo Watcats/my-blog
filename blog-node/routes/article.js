@@ -168,17 +168,22 @@ exports.getArticleList = (req, res) => {
   //   pageSize = 1000;
   // }
 
-  let conditions = {};
+  let conditions = { type: 1 };
   if (!author) {
     if (keyword) {
       const reg = new RegExp(keyword, 'i'); //不区分大小写
       conditions = {
-        $or: [
-          { title: { $regex: reg } },
-          { keyword: { $regex: reg } },
-          { desc: { $regex: reg } },
-          { content: { $regex: reg } }
-        ],
+        $and: [
+          { type: 1 },
+          {
+            $or: [
+              { title: { $regex: reg } },
+              { keyword: { $regex: reg } },
+              { desc: { $regex: reg } },
+              { content: { $regex: reg } }
+            ],
+          }
+        ]
       };
     }
   } else if (author) {
@@ -187,6 +192,7 @@ exports.getArticleList = (req, res) => {
       const reg = new RegExp(keyword, 'i');
       conditions = {
         $and: [
+          { type: 1 },
           { $or: [{ author: author }] },
           {
             $or: [
@@ -199,7 +205,7 @@ exports.getArticleList = (req, res) => {
         ],
       };
     } else {
-      conditions = { author: author };
+      conditions = { author: author, type: 1 };
     }
   }
 

@@ -5,34 +5,35 @@ import router from "./router";
 import service from "./utils/https";
 import urls from "./utils/urls";
 import mixin from "./mixins";
-import { 
-    ElButton, 
-    ElDialog,
-    ElForm,
-    ElFormItem,
-    ElInput,
-    ElMessage,
-    ElMessageBox,
-    ElMenu,
-    ElMenuItem,
-    ElRow,
-    ElCol,
-    ElDropdown,
-    ElDropdownMenu,
-    ElDropdownItem,
-    ElLoading,
-    ElTimeline,
-    ElTimelineItem,
-    ElCard,
-    ElTag,
-    ElIcon,
-    ElCollapseTransition
+import {
+  ElButton,
+  ElDialog,
+  ElForm,
+  ElFormItem,
+  ElInput,
+  ElMessage,
+  ElMessageBox,
+  ElMenu,
+  ElMenuItem,
+  ElRow,
+  ElCol,
+  ElDropdown,
+  ElDropdownMenu,
+  ElDropdownItem,
+  ElLoading,
+  ElTimeline,
+  ElTimelineItem,
+  ElCard,
+  ElTag,
+  ElIcon,
+  ElCollapseTransition
 } from 'element-plus';
 import VMdEditor from '@kangc/v-md-editor';
 import '@kangc/v-md-editor/lib/style/base-editor.css';
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
 import '@kangc/v-md-editor/lib/theme/style/github.css';
-
+import { registerMicroApps, start } from 'qiankun';
+import apps from './micros/apps'
 // highlightjs
 import hljs from 'highlight.js';
 
@@ -40,6 +41,23 @@ VMdEditor.use(githubTheme, {
   Hljs: hljs,
 });
 
+
+registerMicroApps(apps,
+  {
+    // qiankun 生命周期钩子 - 微应用加载前
+    beforeLoad: (app: any) => {
+      console.log("before load", app.name);
+      return Promise.resolve();
+    },
+    // qiankun 生命周期钩子 - 微应用挂载后
+    afterMount: (app: any) => {
+      console.log("after mount", app.name);
+      return Promise.resolve();
+    },
+  }
+);
+// 启动 qiankun
+start();
 
 const app = createApp(App)
 // app.mixin(mixin);
@@ -80,3 +98,4 @@ app.use(VMdEditor);
 app.use(store, key)
 app.use(router)
 app.mount('#app');
+

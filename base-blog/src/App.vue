@@ -4,6 +4,7 @@
     <div class="layout">
       <router-view />
     </div>
+    <div id="micro-container"></div>
     <ArrowUp></ArrowUp>
     <Footer></Footer>
   </div>
